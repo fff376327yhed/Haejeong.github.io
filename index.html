@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎥해정 뉴스🎥</title>
+    <style>
+        body {
+            font-family: 'Noto Sans KR', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.8;
+            background-color: #f9fbfd;
+            color: #333;
+            overflow-y: scroll;
+        }
+        header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+        header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        main {
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .article-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            max-width: 800px;
+        }
+        article {
+            border: 1px solid #e1e8ed;
+            border-radius: 8px;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            text-align: center;
+        }
+        article:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+        article img {
+            max-width: 100%;
+            max-height: 200px;
+            height: auto;
+            width: auto;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+        article h2 {
+            margin: 0 0 10px;
+            font-size: 20px;
+            color: #007bff;
+        }
+        article p {
+            margin: 0;
+            font-size: 16px;
+            color: #555;
+        }
+        footer {
+            background-color: #f1f3f5;
+            color: #6c757d;
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+            border-top: 1px solid #e1e8ed;
+        }
+        .branding {
+            font-size: 14px;
+            color: #adb5bd;
+        }
+        .content-title {
+            margin: 20px auto;
+            font-size: 30px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🎥해정 뉴스🎥</h1>
+    </header>
+    <main>
+        <div class="content-title"></div>
+        <div class="article-container" id="articleContainer">
+            <!-- Articles will be dynamically inserted here -->
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2025 뉴스 웹사이트 <h6> 저작자 - 혜성</h6></p>
+        <div class="branding">해정뉴스</div>
+    </footer>
+
+    <script>
+        // Sample articles data
+        const articles = [
+            { id: 1, title: '"정아영, 바른 나무 위원회를 무시하며 논란의 중심에 서다"', preview: '기사의 내용을 자세히 보려면 클릭하세요', image: 'images/tree.jpg' },
+        ];
+
+        const container = document.getElementById('articleContainer');
+
+        articles.forEach(article => {
+            const articleElement = document.createElement('article');
+            articleElement.onclick = () => location.href = `article${article.id}.html`;
+
+            const title = document.createElement('h2');
+            title.textContent = article.title;
+            articleElement.appendChild(title);
+
+            const image = document.createElement('img');
+            image.src = article.image;
+            image.alt = article.title;
+            articleElement.appendChild(image);
+
+            const preview = document.createElement('p');
+            preview.textContent = article.preview;
+            articleElement.appendChild(preview);
+
+            container.appendChild(articleElement);
+        });
+    </script>
+</body>
+</html>

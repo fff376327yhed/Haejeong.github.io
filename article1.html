@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎥해정 뉴스🎥</title>
+    <style>
+        body {
+            font-family: 'Noto Sans KR', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.8;
+            background-color: #f9fbfd;
+            color: #333;
+            overflow-y: scroll;
+        }
+        header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+        header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        main {
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .article-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            max-width: 800px;
+        }
+        article {
+            border: 1px solid #e1e8ed;
+            border-radius: 8px;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            text-align: center;
+        }
+        article:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+        article img {
+            max-width: 100%;
+            max-height: 200px;
+            height: auto;
+            width: auto;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+        article h2 {
+            margin: 0 0 10px;
+            font-size: 20px;
+            color: #007bff;
+        }
+        article p {
+            margin: 0;
+            font-size: 16px;
+            color: #555;
+        }
+        .content {
+            margin: 20px 0;
+            font-size: 18px;
+            line-height: 1.6;
+            text-align: justify;
+        }
+        footer {
+            background-color: #f1f3f5;
+            color: #6c757d;
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+            border-top: 1px solid #e1e8ed;
+        }
+        .branding {
+            font-size: 14px;
+            color: #adb5bd;
+        }
+        .content-title {
+            margin: 20px auto;
+            font-size: 30px;
+            font-weight: bold;
+        }
+        .comment-section {
+            margin-top: 40px;
+            padding: 20px;
+            border-top: 1px solid #e1e8ed;
+            background-color: #f9fbfd;
+            text-align: center;
+        }
+        .comment-section h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+        }
+        .comment-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+            align-items: center;
+        }
+        .comment-form input, .comment-form textarea {
+            width: 100%;
+            max-width: 500px;
+            padding: 10px;
+            border: 1px solid #e1e8ed;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .comment-form button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .comment-form button:hover {
+            background-color: #0056b3;
+        }
+        .comments-list {
+            list-style: none;
+            padding: 0;
+        }
+        .comments-list li {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #e1e8ed;
+            border-radius: 4px;
+            background-color: #fff;
+        }
+        .comments-list li .nickname {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .comments-list li .comment {
+            margin: 0;
+        }
+        .reporter {
+            font-size: 14px;
+            color: #555;
+            display: block;
+            margin-left: 10px;
+        }
+        .date {
+            font-size: 12px;
+            color: #777;
+            display: block;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🎥해정 뉴스🎥</h1>
+    </header>
+    <main>
+
+        
+       
+        
+
+
+
+        <div style="text-align: left; margin-top: 20px;">
+            <button onclick="history.back()" style="padding: 10px 20px; font-size: 14px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                뒤로가기
+            </button>
+        </div>
+
+        
+        
+        
+        <!-- 개같다 이거 사진민 중앙정렬 되야하는데 글자들도 중앙정렬된다 하.. 참.. 이걸로 30분이 흘러가버렷네 ㅆ -->
+         <!-- ㅁㄹ 나머지는 아침에 계속 -->
+
+         <div class="content-title"><b>"정아영, 바른 나무 위원회를 무시하며 논란의 중심에 서다"</b></div>
+
+         <div class="content">
+             <span class="reporter">정혜성 기자</span>
+             <span class="date">수정 2025-01-25 18:18   등록 2025-01-25 1:59</span>
+         </div>
+
+         <br>
+<audio src="audio/article.mp4" autoplay loop controls id="myAudio"></audio>
+<p style="font-size: small; text-align: center; color: gray;">기사를 읽어드립니다</p>
+
+         
+         
+
+         
+        <div style="display: flex; justify-content: center; margin-top: 20px;">
+            <img src="images/tree.jpg" alt="관련 이미지" style="max-width: 100%; max-height: 555px; height: auto; width: auto; border-radius: 8px;">
+        </div>
+        <div class="article-container" id="articleContainer">
+            <div style="display: flex; justify-content: center; margin-top: -20px;"> 
+                <h6>☝바른 나무 위원회 사진☝</h6> </div>
+                <div style="display: flex; justify-content: center; margin-top: -30px;"><h4>
+                    예전부터 정아영은 바른 나무 위원회(이하 위원회)를 공개적으로 조롱하고 나무의 가치를 폄하하는 발언을 했다는 논란이 확산되고 있다. 
+                    위원회는 나무의 중요성과 가치를 알리기 위해 설립된 단체로, 이번 사건을 단순한 오해나 의견 차원으로 넘길 수 없다는 입장이다.
+                     
+                    <br><br>위원회는 정아영의 발언과 행동이 나무의 가치를 훼손하고, 환경 보호를 위해 헌신하는 위원회의 노력을 깎아내리는 행위라고 강력히 비판했다. 
+                    위원회 관계자는 "나무는 단순한 자원이 아니라, 생태계와 인간의 삶에 필수적인 존재"라며 "정아영의 행동은 우리의 사명과 나무를 존중하는 모든 사람들의 가치를 모욕하는 것"이라고 강조했다.
+
+                    <br><br> 특히, 위원회는 정아영의 조롱과 폭언이 단순한 개인 의견의 표현이 아닌, 나무의 가치를 무시하는 행위라고 규정하며, 법적 조치를 포함한 강력한 대응을 예고했다.
+                    
+                    <br><br>온라인상에서도 정아영의 행동을 비판하는 목소리가 높다. 많은 네티즌들은 "나무의 중요성을 모르는 발언은 무지에서 비롯된 것"이라며 정아영의 태도를 문제 삼고 있다. 
+                    환경 전문가들 역시 "나무는 인간과 자연의 공존을 가능하게 하는 중요한 존재"라며, 나무를 조롱하거나 가치를 폄하하는 행동은 환경 문제를 경시하는 태도와 다를 바 없다고 지적했다.
+
+                    <br><br>이번 사건은 단순한 논란을 넘어, 우리가 나무와 자연 환경에 대해 얼마나 책임감을 가져야 하는지에 대해 다시금 생각하게 한다. 
+                    바른 나무 위원회의 활동은 단순한 환경 보호를 넘어, 인간과 자연이 조화를 이루는 지속 가능한 미래를 위해 필수적인 가치다. 
+                    정아영과 같은 태도는 이런 가치를 훼손할 뿐 아니라, 환경 보호에 대한 사회적 공감대를 약화시키는 심각한 문제다.
+
+                    <br><br>나무는 단순히 아름다운 풍경을 만들어주는 존재가 아니다. 
+                    그것은 우리의 삶을 지탱하고, 생태계의 균형을 유지하며, 지구의 미래를 보장하는 필수적인 요소다. 
+                    바른 나무 위원회와 같은 단체의 활동은 환경 보존의 최전선에서 중요한 역할을 하고 있다. 따라서 우리는 위원회의 노력을 지지하고, 나무의 가치를 폄하하는 행위에 단호히 반대해야 한다.
+
+                    <br> ------------------------------------------------------------------------------------------------------------------------------------------------------
+                    
+                    <br>요약본 : 정아영이 바른 나무 위원회를 조롱하고 나무의 가치를 폄하하는 발언으로 논란이 되고 있다. 
+                    위원회는 이를 단순한 의견 차원으로 볼 수 없으며, 법적 대응을 포함한 강력한 조치를 예고했다.
+                    위원회는 나무가 생태계와 인간의 삶에 필수적인 존재임을 강조하며, 정아영의 행동이 환경 보호와 관련된 사회적 공감대를 훼손한다고 비판했다. 네티즌과 환경 전문가들 또한 정아영의 태도를 문제 삼으며, 나무와 자연 환경의 중요성을 다시금 상기시키는 계기가 되고 있다.
+                    결론적으로, 나무의 가치를 지키고 환경 보호의 필요성을 인식하기 위해 바른 나무 위원회와 같은 단체의 노력을 지지해야 한다는 목소리가 높아지고 있다.                    
+
+                </h4></div>
+
+                
+                </body>
+                
+                
+
+            </div>
+        </div>
+    </body>
+
+    
+    
+
+        <div class="comment-section">
+            <h3>댓글</h3>
+            <form class="comment-form" id="commentForm">
+                <input type="text" id="nickname" placeholder="닉네임" required>
+                <textarea id="comment" rows="3" placeholder="댓글을 작성하세요" required></textarea>
+                <button type="submit">작성</button>
+            </form>
+            <ul class="comments-list" id="commentsList">
+                <!-- Comments will be dynamically inserted here -->
+            </ul>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2025 뉴스 웹사이트  <h6> 저작자 - 혜성</p>
+        <div class="branding">해정뉴스</div>
+    </footer>
+    <script>
+        
+        const form = document.getElementById('commentForm');
+        const commentsList = document.getElementById('commentsList');
+
+        // 댓글 로컬 스토리지에서 불러오기
+        function loadComments() {
+            const storedComments = JSON.parse(localStorage.getItem('comments')) || [];
+            commentsList.innerHTML = ''; // 기존 댓글 초기화
+            storedComments.forEach(commentObj => {
+                const listItem = document.createElement('li');
+
+                const nicknameElement = document.createElement('div');
+                nicknameElement.classList.add('nickname');
+                nicknameElement.textContent = commentObj.nickname;
+
+                const commentElement = document.createElement('p');
+                commentElement.classList.add('comment');
+                commentElement.textContent = commentObj.comment;
+
+                listItem.appendChild(nicknameElement);
+                listItem.appendChild(commentElement);
+                commentsList.appendChild(listItem);
+            });
+        }
+
+        // 댓글 저장 함수
+        function saveComment(nickname, comment) {
+            const storedComments = JSON.parse(localStorage.getItem('comments')) || [];
+            storedComments.push({ nickname, comment });
+            localStorage.setItem('comments', JSON.stringify(storedComments));
+        }
+
+        form.addEventListener('submit', function(event) {
+    event.preventDefault();
+    const nickname = document.getElementById('nickname').value;
+    const comment = document.getElementById('comment').value;
+
+    if (confirm('이 댓글은 삭제되지 않습니다. 정말 작성하시겠습니까?')) {
+        saveComment(nickname, comment); // 로컬 스토리지에 저장
+        loadComments(); // 댓글 재로드
+        form.reset();
+    }
+});
+
