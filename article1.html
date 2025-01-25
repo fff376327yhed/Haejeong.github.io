@@ -159,7 +159,7 @@
         <div class="content-title">"정아영, 바른 나무 위원회를 무시하며 논란의 중심에 서다"</div>
         <div class="content">
             <span class="reporter">정혜성 기자</span>
-            <span class="date">수정 2025-01-25 18:18   등록 2025-01-25 1:59</span>
+            <span class="date">수정 2025-01-25 10:32 / 등록 2025-01-25 1:59</span>
         </div>
         <audio src="audio/article.mp4" loop controls></audio>
         <p style="font-size: small; text-align: center; color: gray;">기사를 읽어드립니다</p>
@@ -218,50 +218,15 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const form = document.getElementById('commentForm');
-            const commentsList = document.getElementById('commentsList');
-
-            function loadComments() {
-                const storedComments = JSON.parse(localStorage.getItem('comments') || '[]');
-                commentsList.innerHTML = '';
-                if (storedComments.length === 0) {
-                    commentsList.innerHTML = '<li>댓글이 없습니다.</li>';
-                    return;
-                }
-                storedComments.forEach(commentObj => {
-                    const listItem = document.createElement('li');
-                    const nicknameElement = document.createElement('div');
-                    nicknameElement.classList.add('nickname');
-                    nicknameElement.textContent = commentObj.nickname;
-                    const commentElement = document.createElement('p');
-                    commentElement.classList.add('comment');
-                    commentElement.textContent = commentObj.comment;
-                    listItem.appendChild(nicknameElement);
-                    listItem.appendChild(commentElement);
-                    commentsList.appendChild(listItem);
-                });
-            }
-
-            function saveComment(nickname, comment) {
-                const storedComments = JSON.parse(localStorage.getItem('comments') || '[]');
-                storedComments.push({ nickname, comment });
-                localStorage.setItem('comments', JSON.stringify(storedComments));
-            }
-
+    
             form.addEventListener('submit', function (event) {
                 event.preventDefault();
-                const nickname = document.getElementById('nickname').value.trim();
-                const comment = document.getElementById('comment').value.trim();
-                if (!nickname || !comment) {
-                    alert('닉네임과 댓글을 모두 입력해주세요.');
-                    return;
-                }
-                saveComment(nickname, comment);
-                loadComments();
-                form.reset();
+                alert('미구현 기능, 서버 구현하기 어렵고 귀찮고 대가리 깨질 것 같으. 나중에 제작 생각해보겠음.. - 혜성        정아영 ㅄ ㅋ ');
             });
-
-            loadComments();
+    
+            // 댓글 목록 초기화 (로컬스토리지 사용 방지)
+            const commentsList = document.getElementById('commentsList');
+            commentsList.innerHTML = '<li></li>';
         });
     </script>
-</body>
-</html>
+    
