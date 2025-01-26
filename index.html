@@ -91,6 +91,52 @@
             font-size: 30px;
             font-weight: bold;
         }
+        /* Popup styles */
+        #popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border: 2px solid #007bff;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            width: 400px;
+            padding: 30px;
+            text-align: center;
+            display: none;
+            z-index: 2000;
+        }
+        #popup h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #333;
+        }
+        #popup button {
+            margin-top: 15px;
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #popup button:hover {
+            background-color: #0056b3;
+        }
+        #popup .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            color: #007bff;
+        }
+        #popup .close-btn:hover {
+            color: #0056b3;
+        }
     </style>
 </head>
 <body>
@@ -98,7 +144,7 @@
         <h1>🎥해정 뉴스🎥</h1>
     </header>
     <main>
-        <div class="content-title"></div>
+        <div class="content-title">댓글 기능이 추가되었습니다!</div>
         <div class="article-container" id="articleContainer">
             <!-- Articles will be dynamically inserted here -->
         </div>
@@ -108,10 +154,36 @@
         <div class="branding">해정뉴스</div>
     </footer>
 
+    <div id="popup">
+        <button class="close-btn">×</button>
+        <h2>댓글 기능이 추가되었습니다!</h2>
+        <button id="dismissButton">다시 표시하지 않기</button>
+    </div>
+
     <script>
+        const popup = document.getElementById('popup');
+        const dismissButton = document.getElementById('dismissButton');
+        const closeButton = document.querySelector('.close-btn');
+
+        // Show popup if not dismissed
+        if (!localStorage.getItem('popupDismissed')) {
+            popup.style.display = 'block';
+        }
+
+        // Handle dismiss button click
+        dismissButton.addEventListener('click', () => {
+            localStorage.setItem('popupDismissed', 'true');
+            popup.style.display = 'none';
+        });
+
+        // Handle close button click
+        closeButton.addEventListener('click', () => {
+            popup.style.display = 'none';
+        });
+
         // Sample articles data
         const articles = [
-            { id: 1, title: '"정아영, 바른 나무 위원회를 무시하며 논란의 중심에 서다"', preview: '기사의 내용을 자세히 보려면 클릭하세요', image: 'images/tree.jpg' },
+            { id: 1, title: '"정아영, 바른 나무 위원회를 무시하며 논란의 중심에 서다"', preview: ' 작성자 : 정혜성 기자 / 등록 2025-01-25 1:59', image: 'images/tree.jpg' },
             { id: 2, title: '추후 추가할 예정', preview: '제보할 기사가 있으면 카톡으로 사진 + 글', image: 'images/creating.jpg' },
         ];
 
