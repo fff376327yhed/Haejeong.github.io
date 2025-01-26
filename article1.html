@@ -215,18 +215,78 @@
         <p>&copy; 2025 뉴스 웹사이트</p>
         <div class="branding">해정뉴스</div>
     </footer>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const form = document.getElementById('commentForm');
-    
-            form.addEventListener('submit', function (event) {
-                event.preventDefault();
-                alert('미구현 기능, 서버 구현하기 어렵고 귀찮고 대가리 깨질 것 같으. 나중에 제작 생각해보겠음.. - 혜성        정아영 ㅄ ㅋ ');
-            });
-    
-            // 댓글 목록 초기화 (로컬스토리지 사용 방지)
-            const commentsList = document.getElementById('commentsList');
-            commentsList.innerHTML = '<li></li>';
+    <script type="module">
+        // Import Firebase SDKs
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
+        import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-database.js";
+      
+        // Firebase 프로젝트 설정
+        const firebaseConfig = {
+
+
+apiKey: "AIzaSyAADKnFgYL7ols2LqFyr1kbmF7NjaZHN30",
+
+
+authDomain: "haejeongnews.firebaseapp.com",
+
+
+databaseURL: "https://haejeongnews-default-rtdb.firebaseio.com",
+
+
+projectId: "haejeongnews",
+
+
+storageBucket: "haejeongnews.firebasestorage.app",
+
+
+messagingSenderId: "697931918096",
+
+
+appId: "1:697931918096:web:166f46d06a824cb3cc9395",
+
+
+measurementId: "G-GXP1CQ92RW"
+
+
+};
+      
+        // Firebase 초기화
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+        const commentsRef = ref(database, 'comments'); // 댓글 데이터 저장 경로
+      
+        // DOM 요소 선택
+        const form = document.getElementById('commentForm');
+        const nicknameInput = document.getElementById('nickname');
+        const commentInput = document.getElementById('comment');
+        const commentsList = document.getElementById('commentsList');
+      
+        // 댓글 작성 이벤트
+        form.addEventListener('submit', (event) => {
+          event.preventDefault();
+          const nickname = nicknameInput.value.trim();
+          const comment = commentInput.value.trim();
+      
+          if (nickname && comment) {
+            push(commentsRef, { nickname, comment, timestamp: new Date().toISOString() });
+            nicknameInput.value = '';
+            commentInput.value = '';
+          }
         });
-    </script>
-    
+      
+        // 댓글 실시간 로드
+        onValue(commentsRef, (snapshot) => {
+          commentsList.innerHTML = ''; // 기존 목록 초기화
+          snapshot.forEach((childSnapshot) => {
+            const { nickname, comment, timestamp } = childSnapshot.val();
+            const li = document.createElement('li');
+            li.innerHTML = `
+              <div class="nickname">${nickname}</div>
+              <div class="comment">${comment}</div>
+              <div class="date">${new Date(timestamp).toLocaleString('ko-KR')}</div>
+            `;
+            commentsList.appendChild(li);
+          });
+        });
+      </script>
+      
