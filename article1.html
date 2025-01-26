@@ -216,11 +216,11 @@
         <div class="branding">해정뉴스</div>
     </footer>
     <script type="module">
-        // Import Firebase SDKs
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
-        import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-database.js";
+        import { getDatabase, ref, push, onValue, remove, child } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-database.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-auth.js";
       
-        // Firebase 프로젝트 설정
+        // Firebase 설정
         const firebaseConfig = {
 
 
@@ -253,7 +253,13 @@ measurementId: "G-GXP1CQ92RW"
         // Firebase 초기화
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
-        const commentsRef = ref(database, 'comments'); // 댓글 데이터 저장 경로
+        const commentsRef = ref(database, 'comments'); // 댓글 저장 위치
+        const auth = getAuth();
+      
+        // 익명 사용자 인증
+        signInAnonymously(auth).catch((error) => {
+          console.error('익명 인증 오류:', error);
+        });
       
         // DOM 요소 선택
         const form = document.getElementById('commentForm');
@@ -267,26 +273,64 @@ measurementId: "G-GXP1CQ92RW"
           const nickname = nicknameInput.value.trim();
           const comment = commentInput.value.trim();
       
-          if (nickname && comment) {
-            push(commentsRef, { nickname, comment, timestamp: new Date().toISOString() });
+          if (nickname && comment && auth.currentUser) {
+            push(commentsRef, {
+              nickname,
+              comment,
+              uid: auth.currentUser.uid, // 현재 사용자의 고유 ID
+              timestamp: new Date().toISOString()
+            });
             nicknameInput.value = '';
             commentInput.value = '';
           }
         });
       
-        // 댓글 실시간 로드
+        // 댓글 목록 실시간 로드 및 삭제 버튼 추가
         onValue(commentsRef, (snapshot) => {
-          commentsList.innerHTML = ''; // 기존 목록 초기화
+          commentsList.innerHTML = '';
           snapshot.forEach((childSnapshot) => {
-            const { nickname, comment, timestamp } = childSnapshot.val();
+            const commentId = childSnapshot.key; // 댓글 고유 ID
+            const { nickname, comment, uid, timestamp } = childSnapshot.val();
+      
             const li = document.createElement('li');
             li.innerHTML = `
-              <div class="nickname">${nickname}</div>
+              <div class="nickname"><strong>${nickname}</strong></div>
               <div class="comment">${comment}</div>
               <div class="date">${new Date(timestamp).toLocaleString('ko-KR')}</div>
+              ${
+                auth.currentUser && auth.currentUser.uid === uid
+                  ? `<button class="delete-btn" data-id="${commentId}" data-uid="${uid}">삭제</button>`
+                  : ''
+              }
             `;
             commentsList.appendChild(li);
           });
+      
+          // 삭제 버튼 이벤트 추가
+          const deleteButtons = document.querySelectorAll('.delete-btn');
+          deleteButtons.forEach((button) => {
+            button.addEventListener('click', (event) => {
+              const commentId = event.target.getAttribute('data-id');
+              const commentUid = event.target.getAttribute('data-uid');
+              deleteComment(commentId, commentUid);
+            });
+          });
         });
+      
+        // 댓글 삭제 함수
+        function deleteComment(commentId, commentUid) {
+          if (auth.currentUser && auth.currentUser.uid === commentUid) {
+            const commentRef = child(commentsRef, commentId);
+            remove(commentRef)
+              .then(() => {
+                console.log('댓글이 삭제되었습니다.');
+              })
+              .catch((error) => {
+                console.error('댓글 삭제 중 오류가 발생했습니다:', error);
+              });
+          } else {
+            alert('본인이 작성한 댓글만 삭제할 수 있습니다.');
+          }
+        }
       </script>
       
