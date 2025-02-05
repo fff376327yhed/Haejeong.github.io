@@ -140,94 +140,87 @@
     position: relative;
 }
 
-.header-buttons {
-    position: absolute;
-    right: 20px;
-    top: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-}
+    .header-buttons {
+        position: absolute;
+        right: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+    }
 
-#login-btn, #logout-btn {
-    padding: 10px 15px;
-    border: none;
-    background-color: #007bff;
-    color: white;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    margin-bottom: 5px;
-}
+    #login-btn, #logout-btn {
+        padding: 8px 20px; /* 크기 조절 */
+        border: none;
+        background-color: #28a745; /* 색상 변경 (초록색) */
+        color: white;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px; /* 글꼴 크기 조절 */
+        margin-bottom: 5px;
+        margin-left: 550px; /* 간격 추가 */
+        
+    }
 
-#login-btn:hover, #logout-btn:hover {
-    background-color: #0056b3;
-}
+    #login-btn:hover, #logout-btn:hover {
+        background-color: #218838; /* 호버 시 더 진한 초록색 */
+    }
 
+    #settings-container {
+        position: absolute;
+        left: 20px; /* 왼쪽 끝으로 이동 */
+        top: 20px; /* 로그인 버튼과 대칭 */
+    }
 
-header h1 {
-    flex: 1;
-    text-align: center;
-    margin: 0;
-}
+    #settings-btn {
+        width: 50px; /* 크기 조절 */
+        height: 50px;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+    }
 
-.header-buttons {
-    position: absolute;
-    right: 20px;
-    top: 20px;
-}
+    #settings-btn:hover {
+        transform: scale(1.2);
+    }
 
-.settings-container {
-    position: absolute;
-    top: 90px; /* 헤더 아래쪽으로 이동 */
-    right: 20px; /* 오른쪽 끝으로 이동 */
-}
+    header {
+        display: flex;
+        justify-content: center; /* 가운데 정렬 */
+        align-items: center;
+        position: relative;
+        background-color: #007bff; /* 원래의 파란색 배경 */
+        color: white; /* 텍스트 색상 흰색 */
+        padding: 0px 20px; /* 헤더 높이 조절 */
+        height: 100px; /* 고정된 높이 설정 */
+    }
 
-#settings-btn {
-    width: 40px;
-    height: 40px;
-    cursor: pointer;
-    transition: transform 0.2s ease;
-}
-
-#settings-btn:hover {
-    transform: scale(1.1);
-}
-
-#settings-btn {
-    width: 50px; /* 기존 40px → 50px */
-    height: 50px;
-    cursor: pointer;
-    transition: transform 0.2s ease;
-}
-
-#settings-btn:hover {
-    transform: scale(1.2); /* 호버 시 확대 효과 */
-}
-
+    header h1 {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%); /* 가운데 고정 */
+        margin: 0;
+    }
 </style>
 
-</head>
-<body>
-    <header>
-        <h1>🎥해정 뉴스🎥</h1>
-        <div class="header-buttons">
-            <button id="login-btn">로그인</button>
-            <button id="logout-btn" style="display:none;">로그아웃</button>
-        </div>
-    </header>
-    
-    
-    <!-- 설정 버튼을 헤더 아래쪽에 배치 -->
+<header>
+    <div id="settings-container">
+        <a href="settings.html">
+            <img id="settings-btn" src="images/settings.jpg" alt="설정" />
+        </a>
+    </div>
+    <h1>🎥해정 뉴스🎥</h1>
+    <div class="header-buttons">
+        <button id="login-btn">로그인</button>
+        <button id="logout-btn" style="display:none;">로그아웃</button>
+    </div>
+</header>
+
+<!-- 설정 버튼을 헤더 아래쪽에 배치 -->
     <div id="settings-container" class="settings-container">
         <a href="settings.html">
             <img id="settings-btn" src="images/settings.jpg" alt="설정" />
         </a>
     </div>
     
-    
-
-
     <main>
         <div class="article-container" id="articleContainer">
             <!-- Articles will be dynamically inserted here -->
@@ -341,10 +334,6 @@ handleAuthentication();
             container.appendChild(articleElement);
         });
 
-       
-
-
-
-    </script>
+       </script>
 </body>
 </html>
