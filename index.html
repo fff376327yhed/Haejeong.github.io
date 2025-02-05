@@ -140,6 +140,31 @@
     position: relative;
 }
 
+.header-buttons {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+#login-btn, #logout-btn {
+    padding: 10px 15px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+#login-btn:hover, #logout-btn:hover {
+    background-color: #0056b3;
+}
+
+
 header h1 {
     flex: 1;
     text-align: center;
@@ -192,12 +217,14 @@ header h1 {
         </div>
     </header>
     
+    
     <!-- 설정 버튼을 헤더 아래쪽에 배치 -->
-    <div class="settings-container">
+    <div id="settings-container" class="settings-container">
         <a href="settings.html">
             <img id="settings-btn" src="images/settings.jpg" alt="설정" />
         </a>
     </div>
+    
     
 
 
@@ -208,38 +235,47 @@ header h1 {
 
         <script src="https://cdn.auth0.com/js/auth0/9.18/auth0.min.js"></script>
 <script>
-    const auth0Client = new auth0.WebAuth({
-        domain: "dev-hsgcomet.us.auth0.com",
-        clientID: "Kdox5L5553CNs3VDs71LKytqWevg1A4A",
-        redirectUri: "https://fff376327yhed.github.io/Haejeong.github.io/",
-        responseType: "token id_token",
-        scope: "openid profile email"
+   const auth0Client = new auth0.WebAuth({
+    domain: "YOUR_AUTH0_DOMAIN",
+    clientID: "Kdox5L5553CNs3VDs71LKytqWevg1A4A",
+    redirectUri: "https://fff376327yhed.github.io/Haejeong.github.io/",
+    responseType: "token id_token",
+    scope: "openid profile email"
+});
+
+document.getElementById("login-btn").addEventListener("click", () => {
+    auth0Client.authorize();
+});
+
+document.getElementById("logout-btn").addEventListener("click", () => {
+    auth0Client.logout({ returnTo: "https://fff376327yhed.github.io/Haejeong.github.io/" });
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("idToken");
+    updateUI(false);
+});
+
+function handleAuthentication() {
+    auth0Client.parseHash((err, authResult) => {
+        if (authResult && authResult.accessToken && authResult.idToken) {
+            localStorage.setItem("accessToken", authResult.accessToken);
+            localStorage.setItem("idToken", authResult.idToken);
+            updateUI(true);
+        } else {
+            updateUI(false);
+        }
     });
+}
 
-    document.getElementById("login-btn").addEventListener("click", () => {
-        auth0Client.authorize();
-    });
+function updateUI(loggedIn) {
+    document.getElementById("login-btn").style.display = loggedIn ? "none" : "block";
+    document.getElementById("logout-btn").style.display = loggedIn ? "block" : "none";
 
-    document.getElementById("logout-btn").addEventListener("click", () => {
-        auth0Client.logout({ returnTo: "https://fff376327yhed.github.io/Haejeong.github.io/" });
-    });
+    // 설정 버튼 항상 표시
+    document.getElementById("settings-container").style.display = "block";
+}
 
-    function handleAuthentication() {
-        auth0Client.parseHash((err, authResult) => {
-            if (authResult && authResult.accessToken && authResult.idToken) {
-                localStorage.setItem("accessToken", authResult.accessToken);
-                localStorage.setItem("idToken", authResult.idToken);
-                updateUI(true);
-            }
-        });
-    }
+handleAuthentication();
 
-    function updateUI(loggedIn) {
-        document.getElementById("login-btn").style.display = loggedIn ? "none" : "block";
-        document.getElementById("logout-btn").style.display = loggedIn ? "block" : "none";
-    }
-
-    handleAuthentication();
 </script>
 
     </main>
@@ -258,6 +294,7 @@ header h1 {
         const popup = document.getElementById('popup');
         const dismissButton = document.getElementById('dismissButton');
         const closeButton = document.querySelector('.close-btn');
+        
 
         // Show popup if not dismissed
         if (!localStorage.getItem('popupDismissed')) {
@@ -304,13 +341,8 @@ header h1 {
             container.appendChild(articleElement);
         });
 
-        function updateUI(loggedIn) {
-    document.getElementById("login-btn").style.display = loggedIn ? "none" : "block";
-    document.getElementById("logout-btn").style.display = loggedIn ? "block" : "none";
+       
 
-    // 설정 버튼이 로그인 여부에 상관없이 항상 표시되도록 유지
-    document.getElementById("settings-btn").style.display = "block";
-}
 
 
     </script>
