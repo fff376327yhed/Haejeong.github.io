@@ -132,16 +132,116 @@
         #popup .close-btn:hover {
             color: #0056b3;
         }
-    </style>
+        header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    position: relative;
+}
+
+header h1 {
+    flex: 1;
+    text-align: center;
+    margin: 0;
+}
+
+.header-buttons {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+}
+
+.settings-container {
+    position: absolute;
+    top: 90px; /* 헤더 아래쪽으로 이동 */
+    right: 20px; /* 오른쪽 끝으로 이동 */
+}
+
+#settings-btn {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+#settings-btn:hover {
+    transform: scale(1.1);
+}
+
+#settings-btn {
+    width: 50px; /* 기존 40px → 50px */
+    height: 50px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+#settings-btn:hover {
+    transform: scale(1.2); /* 호버 시 확대 효과 */
+}
+
+</style>
+
 </head>
 <body>
     <header>
         <h1>🎥해정 뉴스🎥</h1>
+        <div class="header-buttons">
+            <button id="login-btn">로그인</button>
+            <button id="logout-btn" style="display:none;">로그아웃</button>
+        </div>
     </header>
+    
+    <!-- 설정 버튼을 헤더 아래쪽에 배치 -->
+    <div class="settings-container">
+        <a href="settings.html">
+            <img id="settings-btn" src="images/settings.jpg" alt="설정" />
+        </a>
+    </div>
+    
+
+
     <main>
         <div class="article-container" id="articleContainer">
             <!-- Articles will be dynamically inserted here -->
         </div>
+
+        <script src="https://cdn.auth0.com/js/auth0/9.18/auth0.min.js"></script>
+<script>
+    const auth0Client = new auth0.WebAuth({
+        domain: "dev-hsgcomet.us.auth0.com",
+        clientID: "Kdox5L5553CNs3VDs71LKytqWevg1A4A",
+        redirectUri: "https://fff376327yhed.github.io/Haejeong.github.io/",
+        responseType: "token id_token",
+        scope: "openid profile email"
+    });
+
+    document.getElementById("login-btn").addEventListener("click", () => {
+        auth0Client.authorize();
+    });
+
+    document.getElementById("logout-btn").addEventListener("click", () => {
+        auth0Client.logout({ returnTo: "https://fff376327yhed.github.io/Haejeong.github.io/" });
+    });
+
+    function handleAuthentication() {
+        auth0Client.parseHash((err, authResult) => {
+            if (authResult && authResult.accessToken && authResult.idToken) {
+                localStorage.setItem("accessToken", authResult.accessToken);
+                localStorage.setItem("idToken", authResult.idToken);
+                updateUI(true);
+            }
+        });
+    }
+
+    function updateUI(loggedIn) {
+        document.getElementById("login-btn").style.display = loggedIn ? "none" : "block";
+        document.getElementById("logout-btn").style.display = loggedIn ? "block" : "none";
+    }
+
+    handleAuthentication();
+</script>
+
     </main>
     <footer>
         <p>&copy; 2025 뉴스 웹사이트 <h6> 저작자 - 혜성</h6></p>
@@ -179,8 +279,6 @@
         const articles = [
            { id: 2, title: '송산고 정아영·양승민, 열애설로 교내 ‘시끌’…친구 이상의 관계?', preview: '작성자 : 박은채 기자 / 등록 2025-01-26 8:32', image: 'images/enchae.jpg' },
            { id: 1, title: '"정아영, 바른 나무 위원회를 무시하며 논란의 중심에 서다"', preview: ' 작성자 : 정혜성 기자 / 등록 2025-01-25 1:59', image: 'images/tree.jpg' },
-           { id: 3, title: '추후 추가될 예정..', preview: '제보할 기삿거리가 있으면 카톡으로 주세요!', image: 'images/creating.jpg' },
-
             
         ];
 
@@ -205,6 +303,16 @@
 
             container.appendChild(articleElement);
         });
+
+        function updateUI(loggedIn) {
+    document.getElementById("login-btn").style.display = loggedIn ? "none" : "block";
+    document.getElementById("logout-btn").style.display = loggedIn ? "block" : "none";
+
+    // 설정 버튼이 로그인 여부에 상관없이 항상 표시되도록 유지
+    document.getElementById("settings-btn").style.display = "block";
+}
+
+
     </script>
 </body>
 </html>
