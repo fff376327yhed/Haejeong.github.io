@@ -262,5 +262,28 @@
             commentsList.appendChild(li);
           });
         });
+
+        // 로그인 상태 확인
+    function isLoggedIn() {
+        return localStorage.getItem("accessToken") !== null;
+    }
+
+    // 댓글 입력 필드 클릭 시 로그인 상태 확인 (한 번만 실행)
+    document.getElementById("comment").addEventListener("focus", function() {
+        if (!isLoggedIn()) {
+            alert("로그인을 먼저 해주세요!");
+            document.getElementById("commentForm").style.display = "none"; // 댓글 작성 폼 숨김
+            this.blur(); // 입력창에서 포커스 제거 (다시 클릭해야 포커스 됨)
+        }
+    }, { once: true }); // `once: true` 옵션을 추가하여 한 번만 실행되도록 설정
+
+    // 댓글 폼 제출 시 로그인 확인
+    document.getElementById("commentForm").addEventListener("submit", function(event) {
+        if (!isLoggedIn()) {
+            event.preventDefault(); // 기본 제출 동작 방지
+            return false; // 실행 중지
+        }
+    });
+        
       </script>
       
