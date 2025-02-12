@@ -6,36 +6,54 @@
     <title>설정</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: "Noto Sans KR", sans-serif;
             text-align: center;
             background-color: #f4f4f4;
             padding: 50px;
         }
         .container {
             background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
             display: inline-block;
+            width: 80%;
+            max-width: 600px;
         }
         h1 {
-            color: #333;
+            color: #222;
+            font-size: 24px;
+            font-weight: bold;
         }
         p {
-            color: #666;
+            color: #444;
+            font-size: 18px;
         }
-        .fortune-btn {
+        .fortune-btn, .back-btn {
             background-color: #007bff;
             color: white;
             border: none;
-            padding: 10px 20px;
-            font-size: 16px;
+            padding: 12px 24px;
+            font-size: 18px;
             cursor: pointer;
-            border-radius: 5px;
-            margin-top: 10px;
+            border-radius: 8px;
+            margin-top: 15px;
+            display: block;
+            width: 100%;
+            max-width: 300px;
+            margin-left: auto;
+            margin-right: auto;
         }
-        .fortune-btn:hover {
+        .fortune-btn:hover, .back-btn:hover {
             background-color: #0056b3;
+        }
+        .image-container {
+            margin-bottom: 15px;
+        }
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
         }
     </style>
 </head>
@@ -43,7 +61,11 @@
     <div class="container">
         <h1>설정</h1>
         <p>아직 설정은 미구현 기능입니다.<br>대신 오늘의 운세를 확인해보세요!</p>
+        <div class="image-container">
+            <img src="fortune.jpg" alt="운세 이미지">
+        </div>
         <button class="fortune-btn" onclick="location.href='fortune.html'">오늘의 운세 확인</button>
+        <button class="back-btn" onclick="location.href='index.html'">돌아가기</button>
     </div>
 </body>
 </html>
