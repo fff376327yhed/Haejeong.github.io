@@ -1,1 +1,344 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>오늘의 타로</title>
+  <style>
+    /* 기본 배경 및 폰트 설정 */
+    body {
+      font-family: 'Pretendard', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow-y: auto;
+      flex-direction: column;
+    }
+    .container {
+      width: 90%;
+      max-width: 1000px;
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+      padding: 20px;
+      margin: 20px auto;
+      position: relative;
+    }
+    /* 헤더 영역: 그리드 레이아웃으로 좌측, 중앙, 우측 구성 */
+    .header {
+      display: grid;
+      grid-template-columns: auto auto auto;
+      align-items: center;
+      justify-items: center;
+      gap: 90px;
+      width: fit-content;
+      margin: 0 auto 40px;
+    }
+    .header h1 {
+      margin: 0;
+      /* 타이틀을 약간 아래로 내리기 */
+      margin-top: 10px;
+      font-size: 2.5em;
+      font-family: 'Cinzel', serif;
+      letter-spacing: 2px;
+      text-align: center;
+    }
+    .header button {
+      background: transparent;
+      border: 2px solid #fff;
+      border-radius: 5px;
+      padding: 10px 15px;
+      font-size: 1.2em;
+      color: #fff;
+      cursor: pointer;
+      transition: background 0.3s, color 0.3s;
+      /* 버튼의 너비는 콘텐츠에 맞게 auto */
+    }
+    .header button:hover {
+      background: #fff;
+      color: #333;
+    }
+    /* 카드 영역 및 결과 모달 */
+    .card-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+      margin-bottom: 20px;
+    }
+    .card {
+      width: 120px;
+      height: 180px;
+      cursor: pointer;
+      perspective: 1000px;
+      position: relative;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.8);
+    }
+    .card-inner {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      transition: transform 1s;
+      transform-style: preserve-3d;
+    }
+    .card.flipped .card-inner {
+      transform: rotateY(180deg);
+    }
+    .card-face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 10px;
+      backface-visibility: hidden;
+    }
+    .card-back {
+      background: url('fortunes/card_back.png') no-repeat center/cover;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3em;
+      font-weight: bold;
+      color: #2a5298;
+    }
+    .card-front {
+      background: url('fortunes/fortune1.png') no-repeat center/cover;
+      transform: rotateY(180deg);
+    }
+    /* 결과 모달 전체 화면 오버레이 */
+    .result-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.5s, visibility 0.5s;
+      z-index: 10;
+    }
+    .result-modal.show {
+      opacity: 1;
+      visibility: visible;
+    }
+    .result-content {
+      text-align: center;
+      animation: enlargeCard 1.5s ease-out forwards;
+    }
+    @keyframes enlargeCard {
+      from {
+        transform: scale(0.5) rotate(0deg);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1) rotate(720deg);
+        opacity: 1;
+      }
+    }
+    .result-content img {
+      width: 250px;
+      height: 250px;
+      border: 5px solid #fff;
+      border-radius: 15px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.7);
+      margin-bottom: 20px;
+    }
+    .result-content .result-text {
+      font-size: 1.5em;
+      font-family: 'Cinzel', serif;
+      margin: 0 0 20px 0;
+      line-height: 1.4;
+    }
+    .btn-group {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+    }
+    .result-btn {
+      background: #f0c674;
+      border: none;
+      padding: 10px 20px;
+      font-size: 1em;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .result-btn:hover {
+      background: #e0b664;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- 헤더 영역 -->
+    <div class="header">
+      <button class="back-btn" onclick="goHome()">🏠</button>
+      <h1>오늘의 타로</h1>
+      <button class="music-btn" onclick="toggleMusic()" id="musicBtn">🎵</button>
+    </div>
+    <div class="card-container" id="cardContainer">
+      <!-- 28장의 카드가 동적으로 생성됩니다. -->
+    </div>
+  </div>
 
+  <!-- 결과 모달 -->
+  <div class="result-modal" id="resultModal">
+    <div class="result-content">
+      <img id="resultImg" src="" alt="Tarot Result" />
+      <div class="result-text" id="resultText">결과 텍스트</div>
+      <div class="btn-group">
+        <button class="result-btn" onclick="goHome()">홈으로 돌아가기</button>
+        <button class="result-btn" onclick="resetCards()">다시 뽑기</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 음악 자동 재생 및 무한 반복 -->
+  <audio id="backgroundMusic" autoplay loop>
+    <source src="audio/fortune.mp4" type="audio/mp4" />
+    Your browser does not support the audio element.
+  </audio>
+
+  <script>
+    const totalCards = 28;
+    const cardContainer = document.getElementById('cardContainer');
+    const resultModal = document.getElementById('resultModal');
+    const resultImg = document.getElementById('resultImg');
+    const resultText = document.getElementById('resultText');
+
+    const fortuneDescriptions = {
+      1: { name: "「새로운 시작」", description: "용기가 필요한 하루입니다!", summary: "겁내지 말고 도전하세요. 생각보다 좋은 결과가 따라올 거에요" },
+      
+      2: { name: "「창조의 힘」", description: "능력과 아이디어가 빛을 발하는 날입니다", summary: "적극적으로 행동하면 원하는 것을 이룰 수 있어요" },
+      
+      3: { name: "「직관의 소리」", description: "머리보다 감정을 따라야 하는 하루입니다", summary: "논리보다 직감이 중요한 순간, 당신의 감을 믿어보세요" },
+      
+      4: { name: "「강한 의지」", description: "책임감이 중요한 하루입니다", summary: "흔들리지 말고 확신을 가지고 행동하면 좋은 결과가 있을 거에요" },
+      
+      5: { name: "「풍요와 여유」", description: "안정과 행복이 찾아오는 날입니다", summary: "여유를 즐기고 주변 사람들과 좋은 시간을 보내봐요" },
+      
+      6: { name: "「지혜의 길」", description: "배움과 깨달음이 필요한 하루입니다", summary: "믿을 만한 사람의 조언을 따르는 것도 좋은 방법이에요" },
+      
+      7: { name: "「운명의 인연」", description: "인간관계가 중요한 하루입니다!", summary: "주변 사람들과의 대화를 소중히 여기면 좋은 일이 있을 거에요" },
+      
+      8: { name: "「거대한 목표」", description: "목표를 향해 달려 가야하는 하루입니다", summary: "망설이지 말고 전진해 봐요. 승리가 가까워지고 있어요!" },
+      
+      9: { name: "「내면의 힘」", description: "감정 조절이 필요한 하루입니다", summary: "인내심을 가지고 차분하게 행동하면 좋은 결과가 있을 거에요" },
+      
+      10: { name: "「네잎클로버」", description: "예상치 못한 변화가 있을 수도 있는 하루입니다", summary: "운명의 흐름을 받아들이고 유연하게 대처하는 게 중요해요" },
+      
+      11: { name: "「운명의 수레바퀴」", description: "공정함이 중요한 하루입니다", summary: "정직하고 올바른 선택을 하면 운이 따라줄 거에요" },
+      
+      12: { name: "「천사」", description: "오늘 하루만큼은 행복하고 좋은 일이 있을 것 입니다", summary: "오늘을 즐기면 돼요!" },
+      
+      13: { name: "「죽음」", description: "새로운 전환점이 다가오는 날입니다", summary: "과거를 정리하고 새로운 기회를 맞이할 준비를 해 봐요" },
+      
+      14: { name: "「악마」", description: "극단적인 선택이 필요할 수 있는 하루입니다", summary: "감정을 잘 다스리고 중용을 지키면 좋은 결과가 있을 거에요" },
+      
+      15: { name: "「부서진 탑」", description: "충동적인 선택을 조심해야 하는 날입니다", summary: "욕심이나 감정에 휘둘리지 않도록 신중하게 행동해요" },
+      
+      16: { name: "「달」", description: "갑작스러운 사건이 일어날 수도 있는 하루입니다", summary: "당황하지 말고 침착하게 대처하면 위기를 기회로 바꿀 수 있어요" },
+      
+      17: { name: "「부와 명예」", description: "긍정적인 기운이 가득한 날입니다!", summary: "원하는 일이 있다면 적극적으로 움직여 봐요. 좋은 일이 생길 거에요!!" },
+      
+      18: { name: "「태양」", description: "불확실함과 혼란이 있을 수 있는 하루입니다", summary: "모든 걸 다 알 수 없지만, 직감을 믿고 신중하게 행동하면 돼요" },
+      
+      19: { name: "「선택의 갈림길」", description: "중요한 결정을 내려야 하는 하루입니다", summary: "과거를 돌아보고, 후회없는 선택을 하세요" },
+      
+      20: { name: "「칼」", description: "힘든 하루가 될 수 있습니다", summary: "자신의 내면을 바라보고 천천히 해결해 나가봐요" },
+      
+      21: { name: "「완성의 순간」", description: "노력의 결실이 맺어지는 날입니다!", summary: "마지막까지 최선을 다하면 성공이 가까워질 거에요!" },
+      
+      22: { name: "「배신」", description: "인간관계를 주의해야 하는 하루입니다", summary: "인간관계에 많은 힘을 쏟지 않도록 노력 해봐요" },
+      
+      23: { name: "「신의 심판」", description: "차분한 하루가 필요한 날입니다", summary: "상대방이 언행을 하지 않고 정직한 행동만을 하세요" },
+      
+      24: { name: "「바보」", description: "급할수록 천천히 가야 하는 하루입니다", summary: "조급해하지 말고 다양한 시선에서 바라보세요" },
+      
+      25: { name: "「꿈의 여인」", description: "꿈처럼 무엇이든 가능한 하루입니다", summary: "하고싶은 일이 있으면 당장 도전해봐요!" },
+      
+      26: { name: "「감정의 파도」", description: "감정 기복이 있는 하루입니다", summary: "차분하게 감정을 다스리는 것이 중요한 날이에요" },
+      
+      27: { name: "「천상의 계단」", description: "예상치 못한 기회가 다가올 가능성이 있는 날입니다!", summary: "열린 마음으로 기회를 잡아봐요. 도전하면 좋은 일이 있을 거에요!" },
+      
+      28: { name: "「저주」", description: "예상치 못한 안 좋은 일이 다가올 수 있는 하루입니다", summary: "오늘만큼은 집에서 가만히 쉬는게 어떨까요? " }
+    };
+
+    // 카드 랜덤 생성
+    const cardNumbers = Array.from({ length: totalCards }, (_, i) => i + 1);
+    shuffleArray(cardNumbers);
+    cardNumbers.forEach(cardNum => {
+      createCard(cardNum);
+    });
+
+    function createCard(cardNum) {
+      const cardDiv = document.createElement('div');
+      cardDiv.classList.add('card');
+      cardDiv.onclick = () => pickCard(cardNum, cardDiv);
+      cardDiv.innerHTML = `
+        <div class="card-inner">
+          <div class="card-face card-back"></div>
+          <div class="card-face card-front" style="background-image: url('fortunes/fortune${cardNum}.png');"></div>
+        </div>
+      `;
+      cardContainer.appendChild(cardDiv);
+    }
+
+    let cardPicked = false;
+    function pickCard(cardNum, cardElement) {
+      if (cardPicked) return;
+      cardPicked = true;
+      cardElement.classList.add('flipped');
+      resultImg.src = '';
+      resultText.textContent = '불러오는 중...';
+      setTimeout(() => {
+        resultImg.style.transition = '1s ease';
+        resultImg.src = `fortunes/fortune${cardNum}.png`;
+        resultText.innerHTML = `${fortuneDescriptions[cardNum].name}<br>${fortuneDescriptions[cardNum].description}<br>${fortuneDescriptions[cardNum].summary}`;
+        resultModal.classList.add('show');
+      }, 500);
+    }
+
+    function goHome() {
+      window.location.href = 'index.html';
+    }
+
+    function resetCards() {
+      cardPicked = false;
+      const cardElements = document.querySelectorAll('.card');
+      cardElements.forEach(card => card.classList.remove('flipped'));
+      resultModal.classList.remove('show');
+    }
+
+    let isMusicPlaying = true;
+    const musicBtn = document.getElementById('musicBtn');
+    const music = document.getElementById('backgroundMusic');
+
+    function toggleMusic() {
+      if (isMusicPlaying) {
+        music.pause();
+        musicBtn.textContent = '🔇';
+      } else {
+        music.play();
+        musicBtn.textContent = '🎵';
+      }
+      isMusicPlaying = !isMusicPlaying;
+    }
+
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+  </script>
+</body>
+</html>
