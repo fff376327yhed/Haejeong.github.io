@@ -116,7 +116,7 @@
       background: #ffb300;
     }
     #home-button {
-      background: #e53935; /* 빨간색 배경 */
+      background: #e53935;
       color: #fff;
     }
     #home-button:hover {
@@ -127,6 +127,13 @@
       font-size: 16px;
       border-radius: 5px;
       border: 1px solid #ccc;
+    }
+    /* 최저 시도횟수 표시 영역 */
+    #best-attempt {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 16px;
+      color: #333;
     }
   </style>
 </head>
@@ -145,7 +152,7 @@
 
     <!-- 기본 힌트 영역 -->
     <div id="basic-hints"></div>
-    <!-- 상태 표시 (시도 횟수, 경과 시간, 승/패 기록) -->
+    <!-- 상태 표시 (시도 횟수, 경과 시간) -->
     <div id="status-bar"></div>
 
     <div id="game-output">
@@ -160,6 +167,8 @@
       <button id="restart-button" style="display: none;">재시작</button>
       <button id="home-button" style="display: none;">🏠</button>
     </div>
+    <!-- 최저 시도횟수 기록 영역 -->
+    <div id="best-attempt"></div>
   </div>
 
   <script>
@@ -175,15 +184,14 @@
     const basicHintsDiv = document.getElementById('basic-hints');
     const charCountSpan = document.getElementById('char-count');
     const statusBarDiv = document.getElementById('status-bar');
+    const bestAttemptDiv = document.getElementById('best-attempt');
 
     let selectedPassword = "";
     let currentConfig = null;
     let attemptCount = 0;
-    let extraHints = [];
     let timerInterval;
     let startTime;
-    let winCount = 0;
-    let lossCount = 0;
+    let hintCount = 0; // 힌트 사용 횟수
 
     /* 
       난이도별 설정  
@@ -208,7 +216,7 @@
       },
       "어려움": {
         length: 12,
-        baseWords: ["행복", "충전기", "사랑", "기쁨", "희망", "도전", "성공", "정아영개바보", "정혜성개천재", "강남스타일", "소금", "설탕", "어쩔티비저쩔티비", "학교", "컴퓨터", "노트북", "스마트폰", "핸드폰", "구구콘", "치킨피자존맛탱", "가방", "엿", "나비", "신호등", "마녀", "루미큐브", "피타고라스정리", "역설법", "5곱하기8은40", "짱구는못말려", "도라에몽", "쿠키런", "강아지", "개", "고양이", "백수", "심야괴담회", "런닝맨", "할머니", "할아버지", "뉴진스", "개똥벌레", "빨간색콘크리트가루", "메모장", "눈에는눈이에는이", "모자이크", "모나리자", "뿌링클순살치킨", "옷장안에있는패딩들", "스즈메의문단속", "너의이름은", "그쪽도홍박사님을아세요", "아리랑", "대한민국", "프링글스", "잼민이들개패고싶네", "야발개학며칠안남음", "진짜학교가기싫다", "슈슉슈발럼아", "안전안내문자", "에버랜드", "롯데월드", "롯데타워", "엘리베이터", "떴다떴다비행기날아라", "크림빵", "쏭알쏭알싸리잎에은구슬", "제발그만해", "오징어게임", "스파이더맨", "어벤져스", "브롤스타즈", "송산고등학교", "송산고", "빨주노초파남보", "도레미파솔라시도", "가나다라마바사아", "붉은노을", "일더하기일은귀요미", "이건못맞출거다키읔", "장충동왕족발보쌈", "영앤리치", "똥밟았네", "붉은색푸른색그사이삼초", "용감한쿠키의마법사탕", "회전목마", "올리브영", "불고기버거", "불닭볶음면", "코딩은귀찮다", "삼겹살", "오겹살", "소고기", "한우", "떡볶이", "순대", "새우튀김", "화장품", "화장실", "싫은데내가왜얼마줄건데", "보노보노", "까치까치설날은", "띄어쓰기", "비트코인", "코로나", "사채업자", "내생일은육월이십구일", "생일축하합니다", "피아노타일", "베이비샤크뚜루루뚜루", "바보멍청이똥개", "봄봄봄봄이왔네요", "호랑이는무서워요", "도미노피자", "한페이지가될수있게", "일과이분의일", "츄", "해리포터", "한숨", "아이유", "이무진", "에피소드", "고백", "풍선", "동방신기", "너에게난나에게넌", "예술이야", "싸이", "어머님이누구니", "너의모든순간", "비의랩소디", "천상연", "유재석", "이창섭", "송지효", "전소민", "양세찬", "박효신", "도깨비", "데이식스", "냥코대전쟁", "좀비고등학교", "자전거", "사기꾼", "술래잡기고무줄놀이", "모든날모든순간", "응이건맞추지말라고한거", "크크루삥뽕", "포켓몬스터", "안녕자두야", "응답하라일구팔팔", "슬기로운의사생활", "끝말잇기", "슈슈슈슈퍼노바", "나에게그대만이", "프레디의피자가게", "로블록스", "어몽어스", "마인크래프트", "폴가이즈", "엠비티아이", "파피플레이타임", "배틀그라운드", "클래시로얄", "금쪽같은내새끼",],
+        baseWords: ["행복", "충전기", "사랑", "기쁨", "희망", "도전", "성공", "정아영개바보", "정혜성개천재", "강남스타일", "소금", "설탕", "어쩔티비저쩔티비", "학교", "컴퓨터", "노트북", "스마트폰", "핸드폰", "구구콘", "치킨피자존맛탱", "가방", "엿", "나비", "신호등", "마녀", "루미큐브", "피타고라스정리", "역설법", "5곱하기8은40", "짱구는못말려", "도라에몽", "쿠키런", "강아지", "개", "고양이", "백수", "심야괴담회", "런닝맨", "할머니", "할아버지", "뉴진스", "개똥벌레", "빨간색콘크리트가루", "메모장", "눈에는눈이에는이", "모자이크", "모나리자", "뿌링클순살치킨", "옷장안에있는패딩들", "스즈메의문단속", "너의이름은", "그쪽도홍박사님을아세요", "아리랑", "대한민국", "프링글스", "잼민이들개패고싶네", "야발개학며칠안남음", "진짜학교가기싫다", "슈슉슈발럼아", "안전안내문자", "에버랜드", "롯데월드", "롯데타워", "엘리베이터", "떴다떴다비행기날아라", "크림빵", "쏭알쏭알싸리잎에은구슬", "제발그만해", "오징어게임", "스파이더맨", "어벤져스", "브롤스타즈", "송산고등학교", "송산고", "빨주노초파남보", "도레미파솔라시도", "가나다라마바사아", "붉은노을", "일더하기일은귀요미", "이건못맞출거다키읔", "장충동왕족발보쌈", "영앤리치", "똥밟았네", "붉은색푸른색그사이삼초", "용감한쿠키의마법사탕", "회전목마", "올리브영", "불고기버거", "불닭볶음면", "코딩은귀찮다", "삼겹살", "오겹살", "소고기", "한우", "떡볶이", "순대", "새우튀김", "화장품", "화장실", "싫은데내가왜얼마줄건데", "보노보노", "까치까치설날은", "띄어쓰기", "비트코인", "코로나", "사채업자", "내생일은육월이십구일", "생일축하합니다", "피아노타일", "베이비샤크뚜루루뚜루", "바보멍청이똥개", "봄봄봄봄이왔네요", "호랑이는무서워요", "도미노피자", "한페이지가될수있게"],
         fillerSet: "0123456789!@#$%^&*",
         language: "ko",
         composition: "한글, 숫자, 특수문자"
@@ -231,17 +239,6 @@
       return baseWord + filler;
     }
 
-    // 추가 힌트 생성 함수 (힌트 버튼 전용)
-    function generateExtraHints(password, config) {
-      let hints = [];
-      hints.push(`비밀번호의 두 번째 글자는 "${password[1]}" 입니다.`);
-      hints.push(`비밀번호에 사용된 숫자가 최소 1개 이상 포함되어 있습니다.`);
-      if (config.fillerSet.match(/[^0-9]/)) {
-        hints.push(`비밀번호에 특수문자가 포함될 수 있습니다.`);
-      }
-      return hints;
-    }
-
     // 기본 힌트 업데이트 함수
     function updateBasicHints() {
       if (!selectedPassword || !currentConfig) return;
@@ -252,9 +249,7 @@
       if (selectedPassword.length % 2 === 1) {
         mid = selectedPassword[Math.floor(selectedPassword.length / 2)];
       } else {
-        mid =
-          selectedPassword[selectedPassword.length / 2 - 1] +
-          selectedPassword[selectedPassword.length / 2];
+        mid = selectedPassword[selectedPassword.length / 2 - 1] + selectedPassword[selectedPassword.length / 2];
       }
       basicHintsDiv.innerHTML = `
         <strong>기본 힌트:</strong><br>
@@ -266,12 +261,12 @@
       `;
     }
 
-    // 타이머 및 상태바 업데이트 함수
+    // 타이머 및 상태바 업데이트 함수 (승/패 정보 제거)
     function updateStatusBar() {
       const elapsedTime = Math.floor((new Date() - startTime) / 1000);
       const minutes = Math.floor(elapsedTime / 60);
       const seconds = elapsedTime % 60;
-      statusBarDiv.innerHTML = `시도 횟수: ${attemptCount} &nbsp;&nbsp; 경과 시간: ${minutes}분 ${seconds}초 &nbsp;&nbsp; 승: ${winCount} / 패: ${lossCount}`;
+      statusBarDiv.innerHTML = `시도 횟수: ${attemptCount} &nbsp;&nbsp; 경과 시간: ${minutes}분 ${seconds}초`;
     }
 
     function startTimer() {
@@ -296,14 +291,14 @@
       currentConfig = difficultyConfigs[difficulty];
       selectedPassword = generatePassword(currentConfig);
       attemptCount = 0;
-      extraHints = generateExtraHints(selectedPassword, currentConfig);
+      hintCount = 0;
       gameOutput.innerHTML = `새 게임이 시작되었습니다.
 난이도: ${difficulty} (비밀번호 길이: ${currentConfig.length})
 비밀번호는 ${currentConfig.composition}가 포함됩니다.
 난이도를 바꾸시려면 포기를 누르고 난이도 선택에서 난이도를 바꾸고 재시작을 누르세요!
 특수문자에는 " !@#$%^&* " 이 포함됩니다.
 기본 힌트는 위에 표시되어 있습니다.
-오타가 있을 수 있습니다! 제보는 "웹사이트에 관한 모든 질문."" 에서 댓글로 해주세요.
+오타가 있을 수 있습니다! 제보는 "웹사이트에 관한 모든 질문." 에서 댓글로 해주세요.
 
 -------------------------------------------------\n`;
       updateBasicHints();
@@ -319,7 +314,15 @@
       startTimer();
       updateStatusBar();
       gameInput.focus();
-      console.log("정답:", selectedPassword); // 개발자용 콘솔 출력
+      console.log("정답:", selectedPassword);
+
+      // 로컬스토리지에 저장된 최저 시도횟수 불러오기
+      let storedBest = localStorage.getItem('bestAttempt');
+      if(storedBest) {
+        bestAttemptDiv.innerHTML = `최소 시도 횟수 기록: ${storedBest}`;
+      } else {
+        bestAttemptDiv.innerHTML = "";
+      }
     }
 
     // 플레이어의 추측 검사 함수
@@ -329,14 +332,12 @@
         return;
       }
       attemptCount++;
-      // 정확한 위치 일치 개수
       let exactMatches = 0;
       for (let i = 0; i < guess.length; i++) {
         if (guess[i] === selectedPassword[i]) {
           exactMatches++;
         }
       }
-      // 전체 포함된 문자 개수 (중복 고려)
       const freqPassword = {};
       const freqGuess = {};
       for (let char of selectedPassword) {
@@ -356,7 +357,12 @@
       updateStatusBar();
       if (guess === selectedPassword) {
         gameOutput.innerHTML += `\n축하합니다! 정답입니다: ${selectedPassword}\n`;
-        winCount++;
+        let storedBest = localStorage.getItem('bestAttempt');
+        if (!storedBest || attemptCount < parseInt(storedBest)) {
+          localStorage.setItem('bestAttempt', attemptCount);
+          storedBest = attemptCount;
+        }
+        bestAttemptDiv.innerHTML = `최소 시도 횟수 기록: ${storedBest}`;
         endGame();
       }
       gameOutput.scrollTop = gameOutput.scrollHeight;
@@ -375,7 +381,6 @@
       updateStatusBar();
     }
 
-    // 제출 버튼 이벤트
     submitButton.addEventListener('click', function() {
       const userGuess = gameInput.value.trim();
       if (userGuess === "") return;
@@ -385,7 +390,6 @@
       updateCharCount();
     });
 
-    // 엔터키 제출 처리
     gameInput.addEventListener("keypress", function(event) {
       if (event.key === "Enter") {
         event.preventDefault();
@@ -393,41 +397,48 @@
       }
     });
 
-    // 입력 시 남은 글자 수 업데이트
     gameInput.addEventListener("input", updateCharCount);
 
-    // 포기 버튼: 정답 공개 후 게임 종료 (패배 처리)
     giveupButton.addEventListener('click', function() {
       gameOutput.innerHTML += `\n포기하셨습니다. 정답은 "${selectedPassword}" 입니다.\n`;
-      lossCount++;
       endGame();
     });
 
-    // 힌트 버튼: extraHints 배열에서 남은 힌트를 무작위로 제공
+    // 힌트 버튼: 제한 없이 누를 수 있으며, 사용횟수에 따라 점점 결정적인 힌트를 제공합니다.
     hintButton.addEventListener('click', function() {
-      if (extraHints.length > 0) {
-        const index = Math.floor(Math.random() * extraHints.length);
-        const hint = extraHints[index];
-        gameOutput.innerHTML += `힌트: ${hint}\n`;
-        extraHints.splice(index, 1);
+      hintCount++;
+      let hintMessage = "";
+      if (hintCount === 1) {
+        hintMessage = `힌트: 비밀번호의 두 번째 글자는 "${selectedPassword[1]}" 입니다.`;
+      } else if (hintCount === 2) {
+        hintMessage = `힌트: 비밀번호에 사용된 숫자가 최소 1개 이상 포함되어 있습니다.`;
+      } else if (hintCount === 3) {
+        if(currentConfig.fillerSet.match(/[^0-9]/)){
+          hintMessage = `힌트: 비밀번호에 특수문자가 포함될 수 있습니다.`;
+        } else {
+          hintMessage = `힌트: 비밀번호는 숫자와 알파벳으로만 구성됩니다.`;
+        }
+      } else if (hintCount === 4) {
+        hintMessage = `결정적인 힌트: 비밀번호의 세 번째 글자는 "${selectedPassword[2]}" 입니다.`;
+      } else if (hintCount === 5) {
+        hintMessage = `결정적인 힌트: 비밀번호의 네 번째 글자는 "${selectedPassword[3]}" 입니다.`;
       } else {
-        gameOutput.innerHTML += `더 이상 힌트가 없습니다.\n`;
+        let pos = Math.min(hintCount, selectedPassword.length - 1);
+        hintMessage = `추가 힌트: 비밀번호의 ${pos+1}번째 글자는 "${selectedPassword[pos]}" 입니다.`;
       }
+      gameOutput.innerHTML += hintMessage + "\n";
       gameOutput.scrollTop = gameOutput.scrollHeight;
     });
 
-    // 재시작 버튼 이벤트
     restartButton.addEventListener('click', function() {
       clearInterval(timerInterval);
       initGame();
     });
 
-    // 집(홈) 버튼: index.html로 이동
     homeButton.addEventListener('click', function() {
       window.location.href = "index.html";
     });
 
-    // 게임 시작
     initGame();
   </script>
 </body>
