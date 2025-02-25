@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎥해정 뉴스🎥</title>
+    <style>
+        body {
+            font-family: 'Noto Sans KR', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.8;
+            background-color: #f9fbfd;
+            color: #333;
+            overflow-y: scroll;
+        }
+        header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+        header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        main {
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .article-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            max-width: 800px;
+        }
+        article {
+            border: 1px solid #e1e8ed;
+            border-radius: 8px;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: justify;
+        }
+        article img {
+            max-width: 100%;
+            max-height: 555px;
+            border-radius: 8px;
+            margin: 20px auto;
+            display: block;
+        }
+        .content-title {
+            font-size: 30px;
+            font-weight: bold;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .content {
+            font-size: 18px;
+            line-height: 1.6;
+            margin: 20px 0;
+        }
+        footer {
+            background-color: #f1f3f5;
+            color: #6c757d;
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+            border-top: 1px solid #e1e8ed;
+        }
+        .branding {
+            font-size: 14px;
+            color: #adb5bd;
+        }
+        .comment-section {
+            margin-top: 40px;
+            padding: 20px;
+            border-top: 1px solid #e1e8ed;
+            background-color: #f9fbfd;
+            text-align: center;
+        }
+        .comment-section h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+        }
+        .comment-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+            align-items: center;
+        }
+        .comment-form input, .comment-form textarea {
+            width: 100%;
+            max-width: 500px;
+            padding: 10px;
+            border: 1px solid #e1e8ed;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .comment-form button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .comment-form button:hover {
+            background-color: #0056b3;
+        }
+        .comments-list {
+            list-style: none;
+            padding: 0;
+        }
+        .comments-list li {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #e1e8ed;
+            border-radius: 4px;
+            background-color: #fff;
+        }
+        .comments-list li .nickname {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .comments-list li .comment {
+            margin: 0;
+        }
+        .reporter {
+            font-size: 14px;
+            color: #555;
+        }
+        .date {
+            font-size: 12px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🎥해정 뉴스🎥</h1>
+    </header>
+    <main>
+        <div style="text-align: left; margin-top: 20px;">
+            <button onclick="history.back()" style="padding: 10px 20px; font-size: 14px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                뒤로가기
+            </button>
+        </div>
+        <div class="content-title">"정아영, 바른 나무 위원회를 무시하며 논란의 중심에 서다"</div>
+        <div class="content">
+            <span class="reporter">정혜성 기자</span>
+            <span class="date">수정 2025-01-25 10:32 / 등록 2025-01-25 1:59</span>
+        </div>
+        <audio src="audio/article2.mp4" loop controls></audio>
+        <p style="font-size: small; text-align: center; color: gray;">기사를 읽어드립니다</p>
+        
+        <article>
+            <div style="display: flex; justify-content: center; margin-top: 20px;">
+                <img src="images/tree.jpg" alt="관련 이미지" style="max-width: 100%; max-height: 555px; height: auto; width: auto; border-radius: 8px;">
+            </div>
+            <div class="article-container" id="articleContainer">
+                <div style="display: flex; justify-content: center; margin-top: -20px;"> 
+                    <h6>☝바른 나무 위원회 사진☝</h6> </div>
+                    <div style="display: flex; justify-content: center; margin-top: -30px;"><h4>
+                        예전부터 정아영은 바른 나무 위원회(이하 위원회)를 공개적으로 조롱하고 나무의 가치를 폄하하는 발언을 했다는 논란이 확산되고 있다. 
+                        위원회는 나무의 중요성과 가치를 알리기 위해 설립된 단체로, 이번 사건을 단순한 오해나 의견 차원으로 넘길 수 없다는 입장이다.
+                         
+                        <br><br>위원회는 정아영의 발언과 행동이 나무의 가치를 훼손하고, 환경 보호를 위해 헌신하는 위원회의 노력을 깎아내리는 행위라고 강력히 비판했다. 
+                        위원회 관계자는 "나무는 단순한 자원이 아니라, 생태계와 인간의 삶에 필수적인 존재"라며 "정아영의 행동은 우리의 사명과 나무를 존중하는 모든 사람들의 가치를 모욕하는 것"이라고 강조했다.
+    
+                        <br><br> 특히, 위원회는 정아영의 조롱과 폭언이 단순한 개인 의견의 표현이 아닌, 나무의 가치를 무시하는 행위라고 규정하며, 법적 조치를 포함한 강력한 대응을 예고했다.
+                        
+                        <br><br>온라인상에서도 정아영의 행동을 비판하는 목소리가 높다. 많은 네티즌들은 "나무의 중요성을 모르는 발언은 무지에서 비롯된 것"이라며 정아영의 태도를 문제 삼고 있다. 
+                        환경 전문가들 역시 "나무는 인간과 자연의 공존을 가능하게 하는 중요한 존재"라며, 나무를 조롱하거나 가치를 폄하하는 행동은 환경 문제를 경시하는 태도와 다를 바 없다고 지적했다.
+    
+                        <br><br>이번 사건은 단순한 논란을 넘어, 우리가 나무와 자연 환경에 대해 얼마나 책임감을 가져야 하는지에 대해 다시금 생각하게 한다. 
+                        바른 나무 위원회의 활동은 단순한 환경 보호를 넘어, 인간과 자연이 조화를 이루는 지속 가능한 미래를 위해 필수적인 가치다. 
+                        정아영과 같은 태도는 이런 가치를 훼손할 뿐 아니라, 환경 보호에 대한 사회적 공감대를 약화시키는 심각한 문제다.
+    
+                        <br><br>나무는 단순히 아름다운 풍경을 만들어주는 존재가 아니다. 
+                        그것은 우리의 삶을 지탱하고, 생태계의 균형을 유지하며, 지구의 미래를 보장하는 필수적인 요소다. 
+                        바른 나무 위원회와 같은 단체의 활동은 환경 보존의 최전선에서 중요한 역할을 하고 있다. 따라서 우리는 위원회의 노력을 지지하고, 나무의 가치를 폄하하는 행위에 단호히 반대해야 한다.
+    
+                        <br> ------------------------------------------------------------------------------------------------------------------------------------------------------
+                        
+                        <br>요약본 : 정아영이 바른 나무 위원회를 조롱하고 나무의 가치를 폄하하는 발언으로 논란이 되고 있다. 
+                        위원회는 이를 단순한 의견 차원으로 볼 수 없으며, 법적 대응을 포함한 강력한 조치를 예고했다.
+                        위원회는 나무가 생태계와 인간의 삶에 필수적인 존재임을 강조하며, 정아영의 행동이 환경 보호와 관련된 사회적 공감대를 훼손한다고 비판했다. 네티즌과 환경 전문가들 또한 정아영의 태도를 문제 삼으며, 나무와 자연 환경의 중요성을 다시금 상기시키는 계기가 되고 있다.
+                        결론적으로, 나무의 가치를 지키고 환경 보호의 필요성을 인식하기 위해 바른 나무 위원회와 같은 단체의 노력을 지지해야 한다는 목소리가 높아지고 있다.                    
+    
+                    </h4></div>
+    
+        </article>
+        <div class="comment-section">
+            <h3>댓글</h3>
+            <form class="comment-form" id="commentForm" action="">
+                <input type="text" id="nickname" placeholder="닉네임" required>
+                <textarea id="comment" rows="3" placeholder="댓글을 작성하세요" required></textarea>
+                <button type="submit">작성</button>
+            </form>
+            <ul class="comments-list" id="commentsList"></ul>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2025 뉴스 웹사이트</p>
+        <div class="branding">해정뉴스</div>
+    </footer>
+    <script type="module">
+        // Import Firebase SDKs
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
+        import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-database.js";
+      
+        // Firebase 프로젝트 설정
+        const firebaseConfig = {
+
+
+apiKey: "AIzaSyAADKnFgYL7ols2LqFyr1kbmF7NjaZHN30",
+
+
+authDomain: "haejeongnews.firebaseapp.com",
+
+
+databaseURL: "https://haejeongnews-default-rtdb.firebaseio.com",
+
+
+projectId: "haejeongnews",
+
+
+storageBucket: "haejeongnews.firebasestorage.app",
+
+
+messagingSenderId: "697931918096",
+
+
+appId: "1:697931918096:web:166f46d06a824cb3cc9395",
+
+
+measurementId: "G-GXP1CQ92RW"
+
+
+};
+      
+        // Firebase 초기화
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+        const commentsRef = ref(database, 'comments'); // 댓글 데이터 저장 경로
+      
+        // DOM 요소 선택
+        const form = document.getElementById('commentForm');
+        const nicknameInput = document.getElementById('nickname');
+        const commentInput = document.getElementById('comment');
+        const commentsList = document.getElementById('commentsList');
+      
+        // 댓글 작성 이벤트
+        form.addEventListener('submit', (event) => {
+          event.preventDefault();
+          const nickname = nicknameInput.value.trim();
+          const comment = commentInput.value.trim();
+      
+          if (nickname && comment) {
+            push(commentsRef, { nickname, comment, timestamp: new Date().toISOString() });
+            nicknameInput.value = '';
+            commentInput.value = '';
+          }
+        });
+      
+        // 댓글 실시간 로드
+        onValue(commentsRef, (snapshot) => {
+          commentsList.innerHTML = ''; // 기존 목록 초기화
+          snapshot.forEach((childSnapshot) => {
+            const { nickname, comment, timestamp } = childSnapshot.val();
+            const li = document.createElement('li');
+            li.innerHTML = `
+              <div class="nickname">${nickname}</div>
+              <div class="comment">${comment}</div>
+              <div class="date">${new Date(timestamp).toLocaleString('ko-KR')}</div>
+            `;
+            commentsList.appendChild(li);
+          });
+        });
+
+        // 로그인 상태 확인
+    function isLoggedIn() {
+        return localStorage.getItem("accessToken") !== null;
+    }
+
+    // 댓글 입력 필드 클릭 시 로그인 상태 확인 (한 번만 실행)
+    document.getElementById("comment").addEventListener("focus", function() {
+        if (!isLoggedIn()) {
+            alert("로그인을 먼저 해주세요!");
+            document.getElementById("commentForm").style.display = "none"; // 댓글 작성 폼 숨김
+            this.blur(); // 입력창에서 포커스 제거 (다시 클릭해야 포커스 됨)
+        }
+    }, { once: true }); // `once: true` 옵션을 추가하여 한 번만 실행되도록 설정
+
+    // 댓글 폼 제출 시 로그인 확인
+    document.getElementById("commentForm").addEventListener("submit", function(event) {
+        if (!isLoggedIn()) {
+            event.preventDefault(); // 기본 제출 동작 방지
+            return false; // 실행 중지
+        }
+    });
+
+      </script>
+      
