@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎥해정 뉴스🎥</title>
+    <style>
+        body {
+            font-family: 'Noto Sans KR', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.8;
+            background-color: #f9fbfd;
+            color: #333;
+            overflow-y: scroll;
+        }
+        header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+        header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        main {
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .article-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            max-width: 800px;
+        }
+        article {
+            border: 1px solid #e1e8ed;
+            border-radius: 8px;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: justify;
+        }
+        article img {
+            max-width: 100%;
+            max-height: 555px;
+            border-radius: 8px;
+            margin: 20px auto;
+            display: block;
+        }
+        .content-title {
+            font-size: 30px;
+            font-weight: bold;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .content {
+            font-size: 18px;
+            line-height: 1.6;
+            margin: 20px 0;
+        }
+        footer {
+            background-color: #f1f3f5;
+            color: #6c757d;
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+            border-top: 1px solid #e1e8ed;
+        }
+        .branding {
+            font-size: 14px;
+            color: #adb5bd;
+        }
+        .comment-section {
+            margin-top: 40px;
+            padding: 20px;
+            border-top: 1px solid #e1e8ed;
+            background-color: #f9fbfd;
+            text-align: center;
+        }
+        .comment-section h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+        }
+        .comment-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+            align-items: center;
+        }
+        .comment-form input, .comment-form textarea {
+            width: 100%;
+            max-width: 500px;
+            padding: 10px;
+            border: 1px solid #e1e8ed;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .comment-form button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .comment-form button:hover {
+            background-color: #0056b3;
+        }
+        .comments-list {
+            list-style: none;
+            padding: 0;
+        }
+        .comments-list li {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #e1e8ed;
+            border-radius: 4px;
+            background-color: #fff;
+        }
+        .comments-list li .nickname {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .comments-list li .comment {
+            margin: 0;
+        }
+        .reporter {
+            font-size: 14px;
+            color: #555;
+        }
+        .date {
+            font-size: 12px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🎥해정 뉴스🎥</h1>
+    </header>
+    <main>
+        <div style="text-align: left; margin-top: 20px;">
+            <button onclick="history.back()" style="padding: 10px 20px; font-size: 14px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                뒤로가기
+            </button>
+        </div>
+        <div class="content-title">"송산고 정아영·양승민, 열애설로 교내 ‘시끌’…친구 이상의 관계?"</div>
+        <div class="content">
+            <span class="reporter">박은채 기자</span>
+            <span class="date">수정 2025-01-25 8:32 / 등록 2025-01-26 8:32</span>
+        </div>
+        <audio src="audio/article3.mp4" loop controls></audio>
+        <p style="font-size: small; text-align: center; color: gray;">기사를 읽어드립니다</p>
+        
+        <article>
+            <div style="display: flex; justify-content: center; margin-top: 20px;">
+                <img src="images/enchae.jpg" alt="관련 이미지" style="max-width: 100%; max-height: 555px; height: auto; width: auto; border-radius: 8px;">
+            </div>
+            <div class="article-container" id="articleContainer">
+                <div style="display: flex; justify-content: center; margin-top: -20px;"> 
+                    <h6>☝박은채 기자 프로필 사진☝</h6> </div>
+                    <div style="display: flex; justify-content: center; margin-top: -30px;"><h4>
+                        최근 정아영과 양승민 학생이 열애설의 주인공으로 떠오르며 교내에서 뜨거운 관심을 받고 있다.
+
+                        최근 여러 학생들 사이에서 “둘이 사귀는 것 같다”는 목격담이 이어지고 있다. 특히, 점심시간마다 함께 다니는 모습이나 쉬는 시간 동안 복도 한쪽에서 조용히 대화를 나누는 모습이 자주 포착되며, 이들이 단순한 친구 이상의 관계라는 소문이 돌고 있다.
+
+                        <br><br>익명을 요구한 한 학생은 “두 사람이 함께 학원에 가는 걸 몇 번 봤다”며 “굳이 숨기려 하지 않는 걸 보면 사귀는 것 같다는 생각이 든다”고 말했다. 또 다른 학생은 “요즘 서로에게 장난치는 모습이 유독 많다”며 두 사람의 관계를 의심하는 목소리를 더했다.
+
+                        <br><br>정아영 학생은 미친 성격과 소박한 매력을 가지지 못 한 인물로, 주변 친구들과 두루두루 잘 지내는 척 하는 것으로 알려져 있다. 양승민 학생 또한 특별히 눈에 띄는 편은 아니지만, 친절한(?) 성격으로 친구들에게 신뢰를 얻고 있는 학생이다. 두 사람 모두 평범한 일상을 보내고 있었던 만큼 이번 열애설은 학생들 사이에서 큰 화제를 모으고 있다.
+
+                        <br><br>열애설과 관련해 두 사람은 별다른 입장을 밝히지 않은 상태다. 정아영 학생과 친분이 있는 한 친구는 “둘이 워낙 잘 맞아서 함께 다니는 것일 뿐, 사귀는 사이인 것 같다”라며 소문을 시인하여, 이를 확신하고 있는 분위기다.
+
+                        <br><br>학교 측은 학생들 간의 개인적인 관계에 대해 특별한 언급은 피하면서도 “학생들이 소문으로 인해 불편한 상황을 겪지 않기를 바란다”며 조심스러운 입장을 전했다.
+
+                        <br><br>교내에서 뜨거운 관심을 받고 있는 정아영과 양승민. 단순한 친구 사이인지, 아니면 학생들 사이의 추측이 사실인지, 앞으로의 행보에 귀추가 주목된다.
+    
+                    </h4></div>
+    
+        </article>
+        <div class="comment-section">
+            <h3>댓글</h3>
+            <form class="comment-form" id="commentForm" action="">
+                <input type="text" id="nickname" placeholder="닉네임" required>
+                <textarea id="comment" rows="3" placeholder="댓글을 작성하세요" required></textarea>
+                <button type="submit">작성</button>
+            </form>
+            <ul class="comments-list" id="commentsList"></ul>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2025 뉴스 웹사이트</p>
+        <div class="branding">해정뉴스</div>
+    </footer>
+    <script type="module">
+        // Import Firebase SDKs
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
+        import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-database.js";
+      
+        // Firebase 프로젝트 설정
+        const firebaseConfig = {
+
+
+  apiKey: "AIzaSyDrMGQA3Xw5EWF3Ztszb3HDeMtXjbEAL8E",
+  authDomain: "haejeongnews1.firebaseapp.com",
+  databaseURL: "https://haejeongnews1-default-rtdb.firebaseio.com",
+  projectId: "haejeongnews1",
+  storageBucket: "haejeongnews1.firebasestorage.app",
+  messagingSenderId: "6607695010",
+  appId: "1:6607695010:web:92f8cf33f4408f47277bfb",
+  measurementId: "G-EGEMJL9WXF"
+
+
+};
+      
+        // Firebase 초기화
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+        const commentsRef = ref(database, 'comments'); // 댓글 데이터 저장 경로
+      
+        // DOM 요소 선택
+        const form = document.getElementById('commentForm');
+        const nicknameInput = document.getElementById('nickname');
+        const commentInput = document.getElementById('comment');
+        const commentsList = document.getElementById('commentsList');
+      
+        // 댓글 작성 이벤트
+        form.addEventListener('submit', (event) => {
+          event.preventDefault();
+          const nickname = nicknameInput.value.trim();
+          const comment = commentInput.value.trim();
+      
+          if (nickname && comment) {
+            push(commentsRef, { nickname, comment, timestamp: new Date().toISOString() });
+            nicknameInput.value = '';
+            commentInput.value = '';
+          }
+        });
+      
+        // 댓글 실시간 로드
+        onValue(commentsRef, (snapshot) => {
+          commentsList.innerHTML = ''; // 기존 목록 초기화
+          snapshot.forEach((childSnapshot) => {
+            const { nickname, comment, timestamp } = childSnapshot.val();
+            const li = document.createElement('li');
+            li.innerHTML = `
+              <div class="nickname">${nickname}</div>
+              <div class="comment">${comment}</div>
+              <div class="date">${new Date(timestamp).toLocaleString('ko-KR')}</div>
+            `;
+            commentsList.appendChild(li);
+          });
+        });
+
+         // 로그인 상태 확인
+    function isLoggedIn() {
+        return localStorage.getItem("accessToken") !== null;
+    }
+
+    // 댓글 입력 필드 클릭 시 로그인 상태 확인 (한 번만 실행)
+    document.getElementById("comment").addEventListener("focus", function() {
+        if (!isLoggedIn()) {
+            alert("로그인을 먼저 해주세요!");
+            document.getElementById("commentForm").style.display = "none"; // 댓글 작성 폼 숨김
+            this.blur(); // 입력창에서 포커스 제거 (다시 클릭해야 포커스 됨)
+        }
+    }, { once: true }); // `once: true` 옵션을 추가하여 한 번만 실행되도록 설정
+
+    // 댓글 폼 제출 시 로그인 확인
+    document.getElementById("commentForm").addEventListener("submit", function(event) {
+        if (!isLoggedIn()) {
+            event.preventDefault(); // 기본 제출 동작 방지
+            return false; // 실행 중지
+        }
+    });
+    
+      </script>
+      
