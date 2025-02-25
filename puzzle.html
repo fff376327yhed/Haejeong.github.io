@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Complex Password Game</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      background: linear-gradient(to right, #74ebd5, #ACB6E5);
+      font-family: 'Noto Sans KR', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 700px;
+      margin: 50px auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+    header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 28px;
+      color: #333;
+    }
+    header p {
+      margin: 5px 0 15px;
+      color: #555;
+    }
+    #basic-hints {
+      background: #e0f7fa;
+      border: 1px solid #4caf50;
+      border-radius: 5px;
+      padding: 10px;
+      margin-bottom: 10px;
+      font-size: 14px;
+      line-height: 1.5;
+      color: #333;
+    }
+    #status-bar {
+      font-size: 14px;
+      margin-bottom: 10px;
+      text-align: center;
+      color: #333;
+    }
+    #game-output {
+      background: #fafafa;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 10px;
+      min-height: 150px;
+      margin-bottom: 20px;
+      white-space: pre-wrap;
+      font-size: 14px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    #game-input {
+      width: calc(100% - 22px);
+      padding: 10px;
+      font-size: 16px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    #char-count {
+      color: red;
+      font-weight: bold;
+      margin-left: 10px;
+    }
+    .buttons {
+      text-align: center;
+      margin-top: 10px;
+    }
+    button {
+      padding: 10px 20px;
+      margin: 5px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    #submit-button {
+      background: #4caf50;
+      color: #fff;
+    }
+    #submit-button:hover {
+      background: #45a049;
+    }
+    #giveup-button {
+      background: #f44336;
+      color: #fff;
+    }
+    #giveup-button:hover {
+      background: #da190b;
+    }
+    #hint-button {
+      background: #2196f3;
+      color: #fff;
+    }
+    #hint-button:hover {
+      background: #0b7dda;
+    }
+    #restart-button {
+      background: #ffc107;
+      color: #fff;
+    }
+    #restart-button:hover {
+      background: #ffb300;
+    }
+    #home-button {
+      background: #e53935; /* 빨간색 배경 */
+      color: #fff;
+    }
+    #home-button:hover {
+      background: #d32f2f;
+    }
+    select {
+      padding: 5px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Complex Password Game</h1>
+      <p>비밀번호를 맞춰보세요!</p>
+      <label for="difficulty-select">난이도 선택: </label>
+      <select id="difficulty-select">
+        <option value="쉬움">쉬움</option>
+        <option value="보통" selected>보통</option>
+        <option value="어려움">어려움</option>
+      </select>
+    </header>
+
+    <!-- 기본 힌트 영역 -->
+    <div id="basic-hints"></div>
+    <!-- 상태 표시 (시도 횟수, 경과 시간, 승/패 기록) -->
+    <div id="status-bar"></div>
+
+    <div id="game-output">
+      <!-- 게임 메시지가 표시됩니다 -->
+    </div>
+    <input type="text" id="game-input" placeholder="추측을 입력하세요..." />
+    <span id="char-count"></span>
+    <div class="buttons">
+      <button id="submit-button">제출</button>
+      <button id="giveup-button">포기</button>
+      <button id="hint-button">힌트</button>
+      <button id="restart-button" style="display: none;">재시작</button>
+      <button id="home-button" style="display: none;">🏠</button>
+    </div>
+  </div>
+
+  <script>
+    // DOM 요소 가져오기
+    const gameOutput = document.getElementById('game-output');
+    const gameInput = document.getElementById('game-input');
+    const submitButton = document.getElementById('submit-button');
+    const giveupButton = document.getElementById('giveup-button');
+    const hintButton = document.getElementById('hint-button');
+    const restartButton = document.getElementById('restart-button');
+    const homeButton = document.getElementById('home-button');
+    const difficultySelect = document.getElementById('difficulty-select');
+    const basicHintsDiv = document.getElementById('basic-hints');
+    const charCountSpan = document.getElementById('char-count');
+    const statusBarDiv = document.getElementById('status-bar');
+
+    let selectedPassword = "";
+    let currentConfig = null;
+    let attemptCount = 0;
+    let extraHints = [];
+    let timerInterval;
+    let startTime;
+    let winCount = 0;
+    let lossCount = 0;
+
+    /* 
+      난이도별 설정  
+      - 쉬움: 8글자, 영어 단어(예: apple, orange 등) + 숫자 (대소문자 혼합)
+      - 보통: 10글자, 영어 단어(예: apple, mango 등) + 숫자 및 특수문자
+      - 어려움: 12글자, 한글 단어(예: 행복, 충전기 등) + 숫자 및 특수문자
+    */
+    const difficultyConfigs = {
+      "쉬움": {
+        length: 8,
+        baseWords: ["apple", "orange", "banana", "peach", "grape"],
+        fillerSet: "0123456789",
+        language: "en",
+        composition: "영어(대소문자)와 숫자"
+      },
+      "보통": {
+        length: 10,
+        baseWords: ["apple", "mango", "papaya", "cherry", "lemon"],
+        fillerSet: "0123456789!@#$%^&*",
+        language: "en",
+        composition: "영어(대소문자), 숫자, 특수문자"
+      },
+      "어려움": {
+        length: 12,
+        baseWords: ["행복", "충전기", "사랑", "기쁨", "희망", "도전", "성공"],
+        fillerSet: "0123456789!@#$%^&*",
+        language: "ko",
+        composition: "한글, 숫자, 특수문자"
+      }
+    };
+
+    // 실제 단어(기반 단어)를 이용하여 비밀번호 생성 함수
+    function generatePassword(config) {
+      let baseWord = config.baseWords[Math.floor(Math.random() * config.baseWords.length)];
+      if (config.language === "en") {
+        baseWord = Array.from(baseWord)
+          .map(char => (Math.random() < 0.5 ? char.toLowerCase() : char.toUpperCase()))
+          .join('');
+      }
+      let remain = config.length - baseWord.length;
+      let filler = "";
+      for (let i = 0; i < remain; i++) {
+        filler += config.fillerSet.charAt(Math.floor(Math.random() * config.fillerSet.length));
+      }
+      return baseWord + filler;
+    }
+
+    // 추가 힌트 생성 함수 (힌트 버튼 전용)
+    function generateExtraHints(password, config) {
+      let hints = [];
+      hints.push(`비밀번호의 두 번째 글자는 "${password[1]}" 입니다.`);
+      hints.push(`비밀번호에 사용된 숫자가 최소 1개 이상 포함되어 있습니다.`);
+      if (config.fillerSet.match(/[^0-9]/)) {
+        hints.push(`비밀번호에 특수문자가 포함될 수 있습니다.`);
+      }
+      return hints;
+    }
+
+    // 기본 힌트 업데이트 함수
+    function updateBasicHints() {
+      if (!selectedPassword || !currentConfig) return;
+      const len = currentConfig.length;
+      const first = selectedPassword[0];
+      const last = selectedPassword[selectedPassword.length - 1];
+      let mid = "";
+      if (selectedPassword.length % 2 === 1) {
+        mid = selectedPassword[Math.floor(selectedPassword.length / 2)];
+      } else {
+        mid =
+          selectedPassword[selectedPassword.length / 2 - 1] +
+          selectedPassword[selectedPassword.length / 2];
+      }
+      basicHintsDiv.innerHTML = `
+        <strong>기본 힌트:</strong><br>
+        - 비밀번호 길이: ${len}글자<br>
+        - 구성: ${currentConfig.composition}<br>
+        - 첫 글자: ${first}<br>
+        - 중간 글자: ${mid}<br>
+        - 마지막 글자: ${last}
+      `;
+    }
+
+    // 타이머 및 상태바 업데이트 함수
+    function updateStatusBar() {
+      const elapsedTime = Math.floor((new Date() - startTime) / 1000);
+      const minutes = Math.floor(elapsedTime / 60);
+      const seconds = elapsedTime % 60;
+      statusBarDiv.innerHTML = `시도 횟수: ${attemptCount} &nbsp;&nbsp; 경과 시간: ${minutes}분 ${seconds}초 &nbsp;&nbsp; 승: ${winCount} / 패: ${lossCount}`;
+    }
+
+    function startTimer() {
+      startTime = new Date();
+      timerInterval = setInterval(updateStatusBar, 1000);
+    }
+
+    // 남은 글자 수 업데이트 함수
+    function updateCharCount() {
+      if (currentConfig) {
+        let remaining = currentConfig.length - gameInput.value.length;
+        if (remaining < 0) remaining = 0;
+        charCountSpan.textContent = `남은 글자: ${remaining}`;
+      } else {
+        charCountSpan.textContent = "";
+      }
+    }
+
+    // 게임 초기화 함수
+    function initGame() {
+      const difficulty = difficultySelect.value;
+      currentConfig = difficultyConfigs[difficulty];
+      selectedPassword = generatePassword(currentConfig);
+      attemptCount = 0;
+      extraHints = generateExtraHints(selectedPassword, currentConfig);
+      gameOutput.innerHTML = `새 게임이 시작되었습니다.
+난이도: ${difficulty} (비밀번호 길이: ${currentConfig.length})
+비밀번호는 ${currentConfig.composition}가 포함됩니다.
+기본 힌트는 위에 표시되어 있습니다.
+-------------------------------------------------\n`;
+      updateBasicHints();
+      gameInput.value = "";
+      gameInput.disabled = false;
+      submitButton.disabled = false;
+      giveupButton.disabled = false;
+      hintButton.disabled = false;
+      restartButton.style.display = "none";
+      homeButton.style.display = "none";
+      difficultySelect.disabled = true;
+      updateCharCount();
+      startTimer();
+      updateStatusBar();
+      gameInput.focus();
+      console.log("정답:", selectedPassword); // 개발자용 콘솔 출력
+    }
+
+    // 플레이어의 추측 검사 함수
+    function checkGuess(guess) {
+      if (guess.length !== currentConfig.length) {
+        gameOutput.innerHTML += `입력한 단어의 길이가 다릅니다. 비밀번호는 ${currentConfig.length}글자입니다.\n`;
+        return;
+      }
+      attemptCount++;
+      // 정확한 위치 일치 개수
+      let exactMatches = 0;
+      for (let i = 0; i < guess.length; i++) {
+        if (guess[i] === selectedPassword[i]) {
+          exactMatches++;
+        }
+      }
+      // 전체 포함된 문자 개수 (중복 고려)
+      const freqPassword = {};
+      const freqGuess = {};
+      for (let char of selectedPassword) {
+        freqPassword[char] = (freqPassword[char] || 0) + 1;
+      }
+      for (let char of guess) {
+        freqGuess[char] = (freqGuess[char] || 0) + 1;
+      }
+      let totalMatches = 0;
+      for (let char in freqGuess) {
+        if (freqPassword[char]) {
+          totalMatches += Math.min(freqGuess[char], freqPassword[char]);
+        }
+      }
+      let misplacedMatches = totalMatches - exactMatches;
+      gameOutput.innerHTML += `[시도 ${attemptCount}] 추측: "${guess}" → 정확한 위치: ${exactMatches}, 포함(위치 불일치): ${misplacedMatches}\n`;
+      updateStatusBar();
+      if (guess === selectedPassword) {
+        gameOutput.innerHTML += `\n축하합니다! 정답입니다: ${selectedPassword}\n`;
+        winCount++;
+        endGame();
+      }
+      gameOutput.scrollTop = gameOutput.scrollHeight;
+    }
+
+    // 게임 종료 처리 함수
+    function endGame() {
+      clearInterval(timerInterval);
+      gameInput.disabled = true;
+      submitButton.disabled = true;
+      giveupButton.disabled = true;
+      hintButton.disabled = true;
+      restartButton.style.display = "inline-block";
+      homeButton.style.display = "inline-block";
+      difficultySelect.disabled = false;
+      updateStatusBar();
+    }
+
+    // 제출 버튼 이벤트
+    submitButton.addEventListener('click', function() {
+      const userGuess = gameInput.value.trim();
+      if (userGuess === "") return;
+      checkGuess(userGuess);
+      gameInput.value = "";
+      gameInput.focus();
+      updateCharCount();
+    });
+
+    // 엔터키 제출 처리
+    gameInput.addEventListener("keypress", function(event) {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        submitButton.click();
+      }
+    });
+
+    // 입력 시 남은 글자 수 업데이트
+    gameInput.addEventListener("input", updateCharCount);
+
+    // 포기 버튼: 정답 공개 후 게임 종료 (패배 처리)
+    giveupButton.addEventListener('click', function() {
+      gameOutput.innerHTML += `\n포기하셨습니다. 정답은 "${selectedPassword}" 입니다.\n`;
+      lossCount++;
+      endGame();
+    });
+
+    // 힌트 버튼: extraHints 배열에서 남은 힌트를 무작위로 제공
+    hintButton.addEventListener('click', function() {
+      if (extraHints.length > 0) {
+        const index = Math.floor(Math.random() * extraHints.length);
+        const hint = extraHints[index];
+        gameOutput.innerHTML += `힌트: ${hint}\n`;
+        extraHints.splice(index, 1);
+      } else {
+        gameOutput.innerHTML += `더 이상 힌트가 없습니다.\n`;
+      }
+      gameOutput.scrollTop = gameOutput.scrollHeight;
+    });
+
+    // 재시작 버튼 이벤트
+    restartButton.addEventListener('click', function() {
+      clearInterval(timerInterval);
+      initGame();
+    });
+
+    // 집(홈) 버튼: index.html로 이동
+    homeButton.addEventListener('click', function() {
+      window.location.href = "index.html";
+    });
+
+    // 게임 시작
+    initGame();
+  </script>
+</body>
+</html>
