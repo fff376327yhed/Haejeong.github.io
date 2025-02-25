@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎥해정 뉴스🎥</title>
+    <style>
+        body {
+            font-family: 'Noto Sans KR', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.8;
+            background-color: #f9fbfd;
+            color: #333;
+            overflow-y: scroll;
+        }
+        header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+        header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        main {
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .article-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            max-width: 800px;
+        }
+        article {
+            border: 1px solid #e1e8ed;
+            border-radius: 8px;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: justify;
+        }
+        article img {
+            max-width: 100%;
+            max-height: 555px;
+            border-radius: 8px;
+            margin: 20px auto;
+            display: block;
+        }
+        .content-title {
+            font-size: 30px;
+            font-weight: bold;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .content {
+            font-size: 18px;
+            line-height: 1.6;
+            margin: 20px 0;
+        }
+        footer {
+            background-color: #f1f3f5;
+            color: #6c757d;
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+            border-top: 1px solid #e1e8ed;
+        }
+        .branding {
+            font-size: 14px;
+            color: #adb5bd;
+        }
+        .comment-section {
+            margin-top: 40px;
+            padding: 20px;
+            border-top: 1px solid #e1e8ed;
+            background-color: #f9fbfd;
+            text-align: center;
+        }
+        .comment-section h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+        }
+        .comment-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+            align-items: center;
+        }
+        .comment-form input, .comment-form textarea {
+            width: 100%;
+            max-width: 500px;
+            padding: 10px;
+            border: 1px solid #e1e8ed;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .comment-form button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .comment-form button:hover {
+            background-color: #0056b3;
+        }
+        .comments-list {
+            list-style: none;
+            padding: 0;
+        }
+        .comments-list li {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #e1e8ed;
+            border-radius: 4px;
+            background-color: #fff;
+        }
+        .comments-list li .nickname {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .comments-list li .comment {
+            margin: 0;
+        }
+        .reporter {
+            font-size: 14px;
+            color: #555;
+        }
+        .date {
+            font-size: 12px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🎥해정 뉴스🎥</h1>
+    </header>
+    <main>
+        <div style="text-align: left; margin-top: 20px;">
+            <button onclick="history.back()" style="padding: 10px 20px; font-size: 14px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                뒤로가기
+            </button>
+        </div>
+        <div class="content-title">"웹사이트에 관한 모든 질문."</div>
+        <div class="content">
+            <span class="reporter">관리자</span>
+            <span class="date">수정 2025-02-25 8:36 / 등록 2025-02-25 8:36</span>
+        </div>
+        <audio src="audio/article1.mp4" loop controls></audio>
+        <p style="font-size: small; text-align: center; color: gray;">기사를 읽어드립니다</p>
+        
+        <article>
+            
+            <div class="article-container" id="articleContainer">
+                <div style="display: flex; justify-content: center; margin-top: -20px;"> 
+                    
+                    <div style="display: flex; justify-content: center; margin-top: -30px;"><h4>
+                        <br><br>안녕하세요 현재 🎥해정 뉴스🎥를 제작한 관리자입니다. 
+                        <br><br>이 기사에서는 🎥해정 뉴스🎥 웹사이트와 관련된 모든 질문을 받고 있습니다.
+                        <br><br> 혹시라도 궁금한 점이나 오류 등등 모든 질문은 댓글에 적어주세요
+                        <br><br>단, 🎥해정 뉴스🎥 웹사이트와 관련 없는 질문은 답변하지 않습니다
+                        <br> ------------------------------------------------------------------------------------------------------------------------------------------------------
+                        <br><br> 아래는 꼭 읽어주시길 바라는 내용입니다.
+                        <br><br> ------------------------------------------------------------------------------------------------------------------------------------------------------
+
+                        <br><br>아마 이용약관에서 보셨겠지만 
+                        <br>"이 사이트는 오락 및 정보 제공 목적으로 운영되며, 제공되는 모든 콘텐츠는 사실이 아닐 수 있다는 점."
+                        <br>"본 사이트는 명예훼손, 허위사실 유포, 저작권 침해 등의 법적 책임을 지지 않으며, 
+                        <br>사용자는 이를 인지하고 동의한다는 점."
+                        <br>"사용자는 본 사이트를 이용함에 있어 발생할 수 있는 법적 문제에 대한 모든 책임을 스스로 부담한다는 점." 
+                        <br>을 인지하고 🎥해정 뉴스🎥웹사이트를 이용하시기 바랍니다.
+
+                        <br> ------------------------------------------------------------------------------------------------------------------------------------------------------
+                        <br><br> <div>질문!!</div>
+                        <br><br> ------------------------------------------------------------------------------------------------------------------------------------------------------
+
+                        <br><br>Q : 핸드폰에서는 디자인이 별로고 설정버튼을 눌러도 작동을 안 해요!!
+                        <br> A : 아직 핸드폰에서의 디자인은 구현하지 못 하였습니다.
+                        <br> 그러나 핸드폰에서 크롬으로 웹페이지를 접속하였다면 오른쪽 상단 점 3개를 누르고 데스크톱 사이트를 누르신다면 해결이 가능합니다
+
+                        <br><br>Q : 유저들이 기사를 직접 작성할 수 없나요?? 
+                        <br> A : 네 다만 추후 추가할 예정입니다. 
+
+                        <br><br>Q : 기사를 업로드 하기 귀찮으신가요?
+                        <br> A : 헉! 네
+
+                        <br><br><br> 더 필요한 질문이 있으시면 댓글로 남겨주시면 기사에 추가하여 작성하겠습니다. 
+                        <br> 이상 관리자였습니다. 읽어주셔서 감사합니다.
+
+                        
+    
+                     </div>
+    
+        </article>
+        <div class="comment-section">
+            <h3>댓글</h3>
+            <form class="comment-form" id="commentForm" action="">
+                <input type="text" id="nickname" placeholder="닉네임" required>
+                <textarea id="comment" rows="3" placeholder="댓글을 작성하세요" required></textarea>
+                <button type="submit">작성</button>
+            </form>
+            <ul class="comments-list" id="commentsList"></ul>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2025 뉴스 웹사이트</p>
+        <div class="branding">해정뉴스</div>
+    </footer>
+    <script type="module">
+        // Import Firebase SDKs
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
+        import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-database.js";
+      
+        // Firebase 프로젝트 설정
+        const firebaseConfig = {
+
+
+apapiKey: "AIzaSyCvyODRoN8w4evdbQGzdcFO2pNdetCU300",
+    authDomain: "haejeongnews2.firebaseapp.com",
+    databaseURL: "https://haejeongnews2-default-rtdb.firebaseio.com",
+    projectId: "haejeongnews2",
+    storageBucket: "haejeongnews2.firebasestorage.app",
+    messagingSenderId: "981593902441",
+    appId: "1:981593902441:web:7379f7a6745dc1966101f8",
+    measurementId: "G-RNS2F4MHK6"
+
+
+};
+      
+        // Firebase 초기화
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+        const commentsRef = ref(database, 'comments'); // 댓글 데이터 저장 경로
+      
+        // DOM 요소 선택
+        const form = document.getElementById('commentForm');
+        const nicknameInput = document.getElementById('nickname');
+        const commentInput = document.getElementById('comment');
+        const commentsList = document.getElementById('commentsList');
+      
+        // 댓글 작성 이벤트
+        form.addEventListener('submit', (event) => {
+          event.preventDefault();
+          const nickname = nicknameInput.value.trim();
+          const comment = commentInput.value.trim();
+      
+          if (nickname && comment) {
+            push(commentsRef, { nickname, comment, timestamp: new Date().toISOString() });
+            nicknameInput.value = '';
+            commentInput.value = '';
+          }
+        });
+      
+        // 댓글 실시간 로드
+        onValue(commentsRef, (snapshot) => {
+          commentsList.innerHTML = ''; // 기존 목록 초기화
+          snapshot.forEach((childSnapshot) => {
+            const { nickname, comment, timestamp } = childSnapshot.val();
+            const li = document.createElement('li');
+            li.innerHTML = `
+              <div class="nickname">${nickname}</div>
+              <div class="comment">${comment}</div>
+              <div class="date">${new Date(timestamp).toLocaleString('ko-KR')}</div>
+            `;
+            commentsList.appendChild(li);
+          });
+        });
+
+        // 로그인 상태 확인
+    function isLoggedIn() {
+        return localStorage.getItem("accessToken") !== null;
+    }
+
+    // 댓글 입력 필드 클릭 시 로그인 상태 확인 (한 번만 실행)
+    document.getElementById("comment").addEventListener("focus", function() {
+        if (!isLoggedIn()) {
+            alert("로그인을 먼저 해주세요!");
+            document.getElementById("commentForm").style.display = "none"; // 댓글 작성 폼 숨김
+            this.blur(); // 입력창에서 포커스 제거 (다시 클릭해야 포커스 됨)
+        }
+    }, { once: true }); // `once: true` 옵션을 추가하여 한 번만 실행되도록 설정
+
+    // 댓글 폼 제출 시 로그인 확인
+    document.getElementById("commentForm").addEventListener("submit", function(event) {
+        if (!isLoggedIn()) {
+            event.preventDefault(); // 기본 제출 동작 방지
+            return false; // 실행 중지
+        }
+    });
+
+      </script>
+      
